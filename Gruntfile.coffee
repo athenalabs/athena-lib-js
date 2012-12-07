@@ -99,6 +99,6 @@ module.exports = (grunt) ->
   # Register tasks
   grunt.registerTask 'compile', ['coffee', 'closureCompiler']
   grunt.registerTask 'sources', ['coffee', 'closureDepsWriter']
-  grunt.registerTask 'test', ['sources', 'jasmine']
+  grunt.registerTask 'test', ['sources', 'jasmine', 'clean:test']
   grunt.registerTask 'server', ['sources', 'testserver', 'watch']
   grunt.registerTask 'default', ['compile']
