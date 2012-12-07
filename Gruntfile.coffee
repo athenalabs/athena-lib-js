@@ -62,6 +62,10 @@ module.exports = (grunt) ->
       # src: '<%= paths.srcs %>'
       specs: '<%= paths.specs %>'
 
+    watch:
+      files: '<%= paths.coffee %>'
+      tasks: 'sources'
+
     clean:
       js: ['<%= paths.js %>']
       test: ['_SpecRunner.html']
