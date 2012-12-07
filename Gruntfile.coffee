@@ -9,11 +9,19 @@ module.exports = (grunt) ->
       js: 'js/**/*.js'
       min: 'build/athena.lib.min.js'
       srcs: 'js/src/**/*.js'
+      specs: 'js/test/**/*.spec.js'
       closure:
         deps: 'js/deps.js'
         main: 'js/src/lib.js'
         library: 'lib/closure/library'
         compiler: 'lib/closure/compiler.jar'
+      libs: [
+        'node_modules/jquery-browser/lib/jquery.js'
+        'node_modules/underscore/underscore.js'
+        'node_modules/backbone/backbone.js'
+        'lib/bootstrap/bootstrap.min.js'
+        'lib/closure/library/closure/goog/base.js'
+      ]
 
     ####################
     # Tasks
@@ -49,10 +57,19 @@ module.exports = (grunt) ->
           # output_file: '<%= config.paths.closure.deps %>' - adjusted
           root_with_prefix: '"js ../../../../../js"',
 
+    jasmine:
+      # modified below, to include libs
+      # src: '<%= paths.srcs %>'
+      specs: '<%= paths.specs %>'
+
     clean:
       js: ['<%= paths.js %>']
+      test: ['_SpecRunner.html']
 
   # adjust config - needed because some modules dont process templates nicely
+  srcs = [config.paths.closure.deps, config.paths.closure.main]
+  config.jasmine.src = [].concat config.paths.libs, srcs
+
   config.closureCompiler.lib.closureCompiler = config.paths.closure.compiler
   config.closureCompiler.lib.options.js_output_file = config.paths.min
   config.closureDepsWriter.lib.options.output_file = config.paths.closure.deps
@@ -64,8 +81,10 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-coffee'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-closure-tools'
+  grunt.loadNpmTasks 'grunt-jasmine-runner'
 
   # Register tasks
   grunt.registerTask 'compile', ['coffee', 'closureCompiler']
   grunt.registerTask 'sources', ['coffee', 'closureDepsWriter']
+  grunt.registerTask 'test', ['sources', 'jasmine']
   grunt.registerTask 'default', ['compile']
