@@ -73,7 +73,7 @@ module.exports = (grunt) ->
       specs: '<%= paths.specs %>'
 
     clean:
-      js: ['<%= paths.js %>']
+      js: ['js']
       test: ['_SpecRunner.html']
 
   # adjust config - needed because some modules dont process templates nicely
