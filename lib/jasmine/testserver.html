@@ -1,0 +1,77 @@
+<html>
+<head>
+
+<base href="/" />
+
+<!-- lib -->
+<% _.each(lib, function(file) { %>
+<script src="<%= file %>"></script>
+<% }); %>
+
+<link rel="stylesheet" href="/lib/bootstrap/bootstrap.min.css" />
+<link rel="stylesheet" href="/lib/bootstrap/sidenav.css" />
+
+<link rel="stylesheet" href="/lib/jasmine/jasmine.css" />
+<script src="/lib/jasmine/jasmine.js"></script>
+<script src="/lib/jasmine/jasmine-html.js"></script>
+
+<!-- athena.lib -->
+<% if (run[0] == 'minified') { %>
+  <script src="/<%= min %>"></script>
+<% } else { %>
+  <% _.each(src, function(file) { %>
+  <script src="/<%= file %>"></script>
+  <% }); %>
+<% } %>
+
+<!-- specs -->
+<% _.each((_.contains(special, run[0]) ? specs : run), function(spec) { %>
+<script src="/<%= spec %>"></script>
+<% }); %>
+
+<script type="text/javascript">
+window.onload = function() {
+  var env = jasmine.getEnv();
+  env.addReporter(new jasmine.HtmlReporter());
+  env.execute();
+};
+</script>
+
+<style>
+
+iframe {
+  border: 0px;
+  width: 960px;
+ height: 100%;
+ overflow: hidden;
+ border: none;
+}
+
+.sidenav {
+  position: fixed;
+  left: 10px;
+}
+
+body {
+  margin-left: 250px;
+}
+
+</style>
+</head>
+<body>
+
+<ul class="nav nav-list sidenav affix">
+
+<% _.each(_.union(special, specs), function(spec) { %>
+  <li <%= (_.contains(run, spec) ? "class='active'" : '') %>>
+    <a href="/spec/<%= spec %>" target="spec">
+      <i class="icon-chevron-right"></i>
+      <%= spec.replace('js/test/', '') %>
+    </a>
+  </li>
+<% }); %>
+
+</ul>
+
+</body>
+</html>

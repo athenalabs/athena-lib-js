@@ -66,6 +66,12 @@ module.exports = (grunt) ->
       files: '<%= paths.coffee %>'
       tasks: 'sources'
 
+    testserver:
+      # lib: '<%= paths.libs %>' - adjusted
+      # src: '<%= paths.srcs %>' - adjusted
+      min: '<%= paths.min %>'
+      specs: '<%= paths.specs %>'
+
     clean:
       js: ['<%= paths.js %>']
       test: ['_SpecRunner.html']
@@ -73,6 +79,8 @@ module.exports = (grunt) ->
   # adjust config - needed because some modules dont process templates nicely
   srcs = [config.paths.closure.deps, config.paths.closure.main]
   config.jasmine.src = [].concat config.paths.libs, srcs
+  config.testserver.lib = config.paths.libs
+  config.testserver.src = srcs
 
   config.closureCompiler.lib.closureCompiler = config.paths.closure.compiler
   config.closureCompiler.lib.options.js_output_file = config.paths.min
@@ -86,9 +94,11 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-closure-tools'
   grunt.loadNpmTasks 'grunt-jasmine-runner'
+  grunt.loadTasks 'js/tasks'
 
   # Register tasks
   grunt.registerTask 'compile', ['coffee', 'closureCompiler']
   grunt.registerTask 'sources', ['coffee', 'closureDepsWriter']
   grunt.registerTask 'test', ['sources', 'jasmine']
+  grunt.registerTask 'server', ['sources', 'testserver', 'watch']
   grunt.registerTask 'default', ['compile']
