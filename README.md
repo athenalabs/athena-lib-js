@@ -42,6 +42,8 @@ It is tiny, but is separated since it is used in
 
 TODO: build system should create `build` directory, as in, that's what build systems do.
 
+TODO: add *.pyc to submodule .git/.../exclude
+
 ## grunt tasks
 
 TODO: document
