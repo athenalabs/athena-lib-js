@@ -8,41 +8,43 @@ It is tiny, but is separated since it is used in
 
 ## dev setup
 
-* install node (v0.8.1)
+### install node (v0.8.1)
 
-    > brew install node
+    % brew install node
 
-* install npm
-* install phantomjs
+### install npm
+### install phantomjs
 
-    > brew install phantomjs
+    % brew install phantomjs
 
-* install closure compiler
+### install google closure
 
-    > brew install closure-compiler
+install closure compiler
 
-  * create a symlink to the closure-compiler jar to lib/closure.
-    For example, in Mac OS X:
+    % brew install closure-compiler
 
-      > ln -s /usr/local/Cellar/closure-compiler/20120917/libexec/build/compiler.jar .
+Create a symlink to the closure-compiler jar to lib/closure.
+For example, in Mac OS X:
 
-* install Node dependencies
+    % ln -s /usr/local/Cellar/closure-compiler/20120917/libexec/build/compiler.jar .
 
-    > npm install
+initialize google closure-tools submodule:
 
-* install grunt-cli
+    % git submodule init
+    % git submodule update
 
-    > npm install grunt-cli
+### install Node dependencies
 
+    % npm install
 
-* initialize google closure-tools submodule:
+### install grunt-cli
 
-    > git submodule init
-    > git submodule update
+    % npm install grunt-cli
+
 
 TODO: build system should create `build` directory, as in, that's what build systems do.
 
-TODO: add *.pyc to submodule .git/.../exclude
+TODO: add `*.pyc` to submodule `.git/.../exclude`
 
 ## grunt tasks
 
