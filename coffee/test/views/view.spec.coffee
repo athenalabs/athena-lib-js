@@ -14,8 +14,14 @@ describe 'View', ->
   it 'should derive from Backbone.View', ->
     expect util.derives View, Backbone.View
 
+  it 'should have a defaults function', ->
+    expect(typeof View.prototype.events).toBe 'function'
+
+  it 'should have an events function', ->
+    expect(typeof View.prototype.events).toBe 'function'
+
   it 'should have an eventhub option, with the Events interface', ->
-    expect(_.has View.prototype.defaults, 'eventhub').toBe true
+    expect(_.has View.prototype.defaults(), 'eventhub').toBe true
     view = new View()
     expect(view.eventhub).toBeDefined()
     expect(_.isFunction view.eventhub.on).toBe true
@@ -25,8 +31,8 @@ describe 'View', ->
     expect(view2.eventhub).toBe view
 
   it 'should support option `extraClasses`', ->
-    expect(View.prototype.defaults.extraClasses).toBeDefined()
-    expect(_.isArray View.prototype.defaults.extraClasses).toBe true
+    expect(View.prototype.defaults().extraClasses).toBeDefined()
+    expect(_.isArray View.prototype.defaults().extraClasses).toBe true
     view = new View extraClasses: ['class1', 'class2']
     expect(view.$el.hasClass 'class1').toBe true
     expect(view.$el.hasClass 'class2').toBe true

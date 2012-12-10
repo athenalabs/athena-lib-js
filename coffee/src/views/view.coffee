@@ -4,13 +4,16 @@ goog.provide 'athena.lib.View'
 class athena.lib.View extends Backbone.View
 
   # Defaults for view options.
-  defaults:
+  defaults: =>
 
     # additional classes for the element
     extraClasses: []
 
     # Event aggregator (like NSNotificationCenter)
     eventhub: undefined
+
+  # Events for view options.
+  events: => {}
 
   initialize: ->
     super()
