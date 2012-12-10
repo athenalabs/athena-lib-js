@@ -124,7 +124,7 @@ module.exports = (grunt) ->
     # task to watch sources for changes and recompile during development
     watch:
       files: paths.coffee_src
-      tasks: 'deps' # or 'test', or 'testserver' :)
+      tasks: 'sources' # or 'test', or 'testserver' :)
 
     # task to run shell commands
     exec:
