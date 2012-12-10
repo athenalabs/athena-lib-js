@@ -19,7 +19,7 @@ class athena.lib.View extends Backbone.View
     _.defaults @options, @defaults
 
     # If no eventhub is provided, this object is used as the eventhub.
-    this.eventhub = @options.eventhub || @
+    @eventhub = @options.eventhub || @
 
     # Bind all functions within this object (including functions defined in
     # derived classes) to `this`. This exempts you from having to bind
