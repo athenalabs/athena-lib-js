@@ -1,9 +1,9 @@
-goog.provide 'athena.lib.test.util'
+goog.provide 'athena.lib.util.test'
 
-test = athena.lib.test
+test = athena.lib.util.test
 
 # construct, render, and display view
-test.util.view_with_options = (options, viewClass, appendTo) ->
+test.view_with_options = (options, viewClass, appendTo) ->
   viewClass = viewClass || lib.View
   appendTo = appendTo || '.athena-test'
   view = new viewClass options;
@@ -12,13 +12,13 @@ test.util.view_with_options = (options, viewClass, appendTo) ->
   view
 
 # construct, render, and display view with content
-test.util.view_with_content = (content) ->
-  view = test.util.view_with_options.apply @, _.rest arguments
+test.view_with_content = (content) ->
+  view = test.view_with_options.apply @, _.rest arguments
   view.$el.append content
   view
 
 # a jasmine-style spy for Backbone events.
-class test.util.eventSpy
+class test.EventSpy
 
   constructor: (@target, @eventName) ->
     @reset()

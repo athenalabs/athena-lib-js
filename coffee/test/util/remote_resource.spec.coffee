@@ -3,7 +3,6 @@ goog.provide 'athena.lib.util.RemoteResource.spec'
 
 goog.require 'athena.lib.util.RemoteResourceInterface'
 goog.require 'athena.lib.util.RemoteResource'
-goog.require 'athena.lib.test.util'
 
 util = athena.lib.util;
 RemoteResource = util.RemoteResource;

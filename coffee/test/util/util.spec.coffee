@@ -1,7 +1,6 @@
 goog.provide 'athena.lib.util.spec'
 
 goog.require 'athena.lib.util'
-goog.require 'athena.lib.test.util'
 
 util = athena.lib.util;
 
