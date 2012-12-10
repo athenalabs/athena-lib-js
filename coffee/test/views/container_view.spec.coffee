@@ -10,7 +10,7 @@ describe 'ContainerView', ->
     expect(athena.lib.ContainerView).toBeDefined()
 
   it 'should derive from athena.lib.View', ->
-    expect util.derives ContainerView, athena.lib.View
+    expect(util.derives ContainerView, athena.lib.View).toBe true
 
   # create a div to safely append content to the page
   $testdiv = $('<div id="ContainerViewSpec">')
@@ -33,9 +33,9 @@ describe 'ContainerView', ->
 
   it 'should store content given to it', ->
     _.each sample, (value, type) ->
-      expect(new ContainerView(content: value).content).toBe value
+      expect(new ContainerView(content: value).content()).toBe value
 
-  describe 'ContainerView content rendering', ->
+  testRendering = (view_with_content) ->
 
     it 'should render simple strings', ->
       _.each ['a', 'b', 'String Content'], (str) ->
@@ -82,3 +82,12 @@ describe 'ContainerView', ->
       _.each [123, [1, 2, 3]], (unsupported) ->
         view = new ContainerView content: unsupported
         expect(view.render).toThrow()
+
+  describe 'ContainerView content rendering (construct)', ->
+    testRendering (content) -> new ContainerView content: content
+
+  describe 'ContainerView content rendering (change)', ->
+    view = new ContainerView()
+    testRendering (content) ->
+      view.content content
+      view
