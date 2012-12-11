@@ -5,7 +5,7 @@ test = athena.lib.util.test
 # construct, render, and display view
 test.view_with_options = (options, viewClass, appendTo) ->
   viewClass = viewClass || lib.View
-  appendTo = appendTo || '.athena-test'
+  appendTo = appendTo || 'body'
   view = new viewClass options;
   view.render()
   $(appendTo).append view.$el;
