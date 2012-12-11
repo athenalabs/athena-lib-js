@@ -10,7 +10,7 @@ describe 'ContainerView', ->
     expect(athena.lib.ContainerView).toBeDefined()
 
   it 'should derive from athena.lib.View', ->
-    expect(util.derives ContainerView, athena.lib.View).toBe true
+    expect(athena.lib.util.derives ContainerView, athena.lib.View).toBe true
 
   # create a div to safely append content to the page
   $testdiv = $('<div id="ContainerViewSpec">')
