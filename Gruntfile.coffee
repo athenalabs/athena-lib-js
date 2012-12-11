@@ -153,7 +153,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-jasmine-spec-server'
 
   # Register tasks
-  grunt.registerTask 'compile', ['coffee', 'closureCompiler']
+  grunt.registerTask 'compile', ['coffee', 'exec:mkbuild', 'closureCompiler']
   grunt.registerTask 'sources', ['coffee', 'closureDepsWriter']
   grunt.registerTask 'test', ['sources', 'jasmine', 'clean:test']
   grunt.registerTask 'server', ['sources', 'jasmineSpecServer', 'watch']
