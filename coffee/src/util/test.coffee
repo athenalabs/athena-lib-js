@@ -3,12 +3,12 @@ goog.provide 'athena.lib.util.test'
 test = athena.lib.util.test
 
 # construct, render, and display view
-test.view_with_options = (options, viewClass, appendTo) ->
-  viewClass = viewClass || lib.View
+test.view_with_options = (options, ViewClass, appendTo) ->
+  ViewClass = ViewClass || lib.View
   appendTo = appendTo || 'body'
-  view = new viewClass options;
+  view = new ViewClass options
   view.render()
-  $(appendTo).append view.$el;
+  $(appendTo).append view.$el
   view
 
 # construct, render, and display view with content
