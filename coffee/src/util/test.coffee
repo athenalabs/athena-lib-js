@@ -42,7 +42,6 @@ class test.EventSpy
   constructor: (@target, @eventName) ->
     @reset()
     @target.on eventName ? 'all', @trigger
-    @
 
   reset: =>
     @triggered = false
