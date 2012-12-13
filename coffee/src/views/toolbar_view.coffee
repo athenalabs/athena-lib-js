@@ -5,6 +5,8 @@ goog.require 'athena.lib.View'
 # view for generating and containing buttons
 class athena.lib.ToolbarView extends athena.lib.View
 
+  className: 'toolbar-view'
+
   initialize: =>
     super
     @buttons = @options.buttons ? []
