@@ -42,6 +42,7 @@ class test.EventSpy
   constructor: (@target, @eventName) ->
     @reset()
     @target.on eventName, @trigger
+    @
 
   reset: =>
     @triggered = false
