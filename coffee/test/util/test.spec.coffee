@@ -30,8 +30,41 @@ describe 'athena.lib.util.test', ->
       expect(test.throwsExceptionWithString '42', fn, []).toBe false
       expect(test.throwsExceptionWithString '42', fn, [ 'ey' ]).toBe false
 
-  describe 'test.describeSubview', ->
+  describe 'test.describeView', ->
+    class View extends athena.lib.View
+      initialize: =>
+        View.calledWithOptions = @options
 
+    options = {a:1, b:2}
+    @callback = ->
+      it 'should run this test within the block', ->
+        expect(true).toBe true
+
+    spy = spyOn(@, 'callback').andCallThrough()
+
+    test.describeView View, athena.lib.View, options, @callback
+
+    it 'should call the View initialize with given options', ->
+      expect(View.calledWithOptions).toBe options
+
+    it 'should call the callback', ->
+      expect(spy).toHaveBeenCalled()
+
+
+    class BadView extends athena.lib.View
+      initialize: =>
+        throw new Error 'options are bogus'
+      defaults: {}
+      events: => 5
+      render: =>
+        super
+        undefined
+
+    # uncomment below to ensure the tests fail :)
+    # test.describeView BadView, View
+
+
+  describe 'test.describeSubview', ->
     class ChildView extends athena.lib.View
 
     class ParentView extends athena.lib.View
@@ -48,7 +81,7 @@ describe 'athena.lib.util.test', ->
       View: ParentView
       viewOptions: {a: 1, b:2}
       subviewAttr: 'namedSubview'
-      SubView: ChildView
+      Subview: ChildView
       callback: ->
         it 'should run this test within the block', ->
           expect(true).toBe true

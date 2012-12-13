@@ -3,22 +3,14 @@ goog.provide 'athena.lib.View.spec'
 goog.require 'athena.lib.util'
 goog.require 'athena.lib.View'
 
-lib = athena.lib
-util = athena.lib.util
 
-describe 'View', ->
+describe 'athena.lib.View', ->
+  View = athena.lib.View;
+
+  test.describeView View, Backbone.View
+
   it 'should be part of athena.lib', ->
-    expect(athena.lib.View).toBeDefined()
-
-  View = lib.View;
-  it 'should derive from Backbone.View', ->
-    expect util.derives View, Backbone.View
-
-  it 'should have a defaults function', ->
-    expect(typeof View.prototype.events).toBe 'function'
-
-  it 'should have an events function', ->
-    expect(typeof View.prototype.events).toBe 'function'
+    expect(View).toBeDefined()
 
   it 'should have an eventhub option, with the Events interface', ->
     expect(_.has View.prototype.defaults(), 'eventhub').toBe true
@@ -43,10 +35,6 @@ describe 'View', ->
     expect(view.rendering).toBe false
     view.render()
     expect(view.rendering).toBe true
-
-  it 'should have render return @', ->
-    view = new View()
-    expect(view.render()).toBe view
 
   it 'should support softRender', ->
     view1 = new View()

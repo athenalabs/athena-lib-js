@@ -6,11 +6,10 @@ goog.require 'athena.lib.ToolbarView'
 describe 'ToolbarView', ->
   ToolbarView = athena.lib.ToolbarView
 
+  test.describeView ToolbarView, athena.lib.View
+
   it 'should be part of athena.lib', ->
     expect(ToolbarView).toBeDefined()
-
-  it 'should derive from athena.lib.View', ->
-    expect(athena.lib.util.derives ToolbarView, athena.lib.View).toBe true
 
   it 'should have a buttons attribute', ->
     btns = ['a', 'b']

@@ -35,6 +35,42 @@ test.throwsExceptionWithString = (str, fn, args) ->
 
   success
 
+# Utility function to create a describeView block
+test.describeView = (View, SuperView, options, tests) ->
+
+  options ?= {}
+
+  describe "#{View.name} view tests", ->
+
+    it 'should be a function', ->
+      expect(typeof View).toBe 'function'
+
+    it "should derive from #{SuperView.name}", ->
+      expect(athena.lib.util.derives View, SuperView).toBe true
+
+    it 'should be constructible with given options', ->
+      expect(-> new View options).not.toThrow()
+      view = new View options
+      expect(view instanceof View).toBe true
+      expect(view.options).toBe options
+
+    it 'should have a defaults function, that returns an object', ->
+      expect(typeof View.prototype.events).toBe 'function'
+      view = new View options
+      expect(typeof view.defaults()).toBe 'object'
+
+    it 'should have an events function, that returns an object', ->
+      expect(typeof View.prototype.events).toBe 'function'
+      view = new View options
+      expect(typeof view.events()).toBe 'object'
+
+    it 'should have render return @', ->
+      view = new View(options)
+      expect(view.render()).toBe view
+
+    tests?()
+
+
 # Utility function to create a describeSubview block
 test.describeSubview = (options, tests) ->
 
@@ -42,7 +78,7 @@ test.describeSubview = (options, tests) ->
   viewOptions = options.viewOptions
 
   subviewAttr = options.subviewAttr
-  SubView = options.SubView
+  Subview = options.Subview
 
   describe "#{View.name}::#{subviewAttr} subview", ->
 
@@ -50,9 +86,9 @@ test.describeSubview = (options, tests) ->
       view = new View viewOptions
       expect(view[subviewAttr]).toBeDefined()
 
-    it "should be an instanceof #{SubView.name}", ->
+    it "should be an instanceof #{Subview.name}", ->
       view = new View viewOptions
-      expect(view[subviewAttr] instanceof SubView)
+      expect(view[subviewAttr] instanceof Subview)
 
     it 'should not be rendering initially', ->
       view = new View viewOptions

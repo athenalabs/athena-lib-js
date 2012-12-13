@@ -6,11 +6,10 @@ goog.require 'athena.lib.ContainerView'
 describe 'ContainerView', ->
   ContainerView = athena.lib.ContainerView
 
-  it 'should be part of athena.lib', ->
-    expect(athena.lib.ContainerView).toBeDefined()
+  test.describeView ContainerView, athena.lib.View
 
-  it 'should derive from athena.lib.View', ->
-    expect(athena.lib.util.derives ContainerView, athena.lib.View).toBe true
+  it 'should be part of athena.lib', ->
+    expect(ContainerView).toBeDefined()
 
   # create a div to safely append content to the page
   $testdiv = $('<div id="ContainerViewSpec">')
