@@ -23,7 +23,13 @@ test.view_with_content = (content) ->
 # Returns false otherwise.
 test.throwsExceptionWithString = (str, fn, args) ->
   success = false
-  args ?= []
+
+  if args?
+    unless args instanceof Array
+      args = [ args ]
+  else
+    args = []
+
   try fn args... catch error
     success = error.message.search(str) >= 0
 
