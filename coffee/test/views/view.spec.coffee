@@ -44,6 +44,10 @@ describe 'View', ->
     view.render()
     expect(view.rendering).toBe true
 
+  it 'should have render return @', ->
+    view = new View()
+    expect(view.render()).toBe view
+
   it 'should support softRender', ->
     view1 = new View()
     view2 = new View()
