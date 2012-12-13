@@ -15,7 +15,7 @@ class athena.lib.ToolbarView extends athena.lib.View
     _.each @buttons, @renderButton
     @
 
-  renderButton: (button) ->
+  renderButton: (button) =>
     # append views.
     if button instanceof Backbone.View
       @$el.append button.render().el
@@ -37,7 +37,7 @@ class athena.lib.ToolbarView extends athena.lib.View
     else if _.isObject(button)
       @$el.append @buttonFromObject button
 
-  buttonFromObject: (button) ->
+  buttonFromObject: (button) =>
     btn = $ '<button>'
     btn.addClass 'btn'
     btn.text button.text
