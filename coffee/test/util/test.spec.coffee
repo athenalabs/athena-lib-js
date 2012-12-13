@@ -30,6 +30,39 @@ describe 'athena.lib.util.test', ->
       expect(test.throwsExceptionWithString '42', fn, []).toBe false
       expect(test.throwsExceptionWithString '42', fn, [ 'ey' ]).toBe false
 
+  describe 'test.describeSubview', ->
+
+    class ChildView extends athena.lib.View
+
+    class ParentView extends athena.lib.View
+      initialize: =>
+        ParentView.calledWithOptions = @options
+        @namedSubview = new ChildView
+
+      render: =>
+        super
+        @$el.append @namedSubview.render().el
+        @
+
+    options =
+      View: ParentView
+      viewOptions: {a: 1, b:2}
+      subviewAttr: 'namedSubview'
+      SubView: ChildView
+      callback: ->
+        it 'should run this test within the block', ->
+          expect(true).toBe true
+
+    spy = spyOn(options, 'callback').andCallThrough()
+
+    test.describeSubview options, options.callback
+
+    it 'should call the ParentView initialize with given options', ->
+      expect(ParentView.calledWithOptions).toBe options.viewOptions
+
+    it 'should call the callback', ->
+      expect(spy).toHaveBeenCalled()
+
 
   describe 'EventSpy', ->
     it 'should be a function', ->
