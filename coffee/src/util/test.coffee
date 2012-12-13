@@ -17,6 +17,19 @@ test.view_with_content = (content) ->
   view.$el.append content
   view
 
+
+# Returns true if `fn` throws an exception whose message contains `str` when
+# called with parameters in array `args`.
+# Returns false otherwise.
+test.throwsExceptionWithString = (str, fn, args) ->
+  success = false
+  args ?= []
+  try fn args... catch error
+    success = error.message.search(str) >= 0
+
+  success
+
+
 # a jasmine-style spy for Backbone events.
 class test.EventSpy
 
