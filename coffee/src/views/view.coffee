@@ -50,6 +50,7 @@ class athena.lib.View extends Backbone.View
 
     @rendering = true
     @delegateEvents()
+    @
 
   # Renders only if the view is in the ``rendering`` state.
   softRender: ->
