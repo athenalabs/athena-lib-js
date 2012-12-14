@@ -3,6 +3,13 @@ goog.provide 'athena.lib.View'
 # top level view for athena.lib
 class athena.lib.View extends Backbone.View
 
+  className: ''
+
+  # extend className with `className: @classNameExtend 'additional-class'`
+  @classNameExtend: (className) ->
+    superClass = @::className
+    if superClass then superClass + ' ' + className else className
+
   # Defaults for view options.
   defaults: =>
 
