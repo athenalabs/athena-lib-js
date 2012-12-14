@@ -5,6 +5,8 @@ goog.require 'athena.lib.View'
 # contains content given to it, renders it if need be.
 class athena.lib.ContainerView extends athena.lib.View
 
+  className: @classNameExtend 'container-view'
+
   initialize: =>
     super()
     @content @options.content
