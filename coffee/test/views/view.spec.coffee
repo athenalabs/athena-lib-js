@@ -5,7 +5,7 @@ goog.require 'athena.lib.View'
 
 
 describe 'athena.lib.View', ->
-  View = athena.lib.View;
+  View = athena.lib.View
 
   test.describeView View, Backbone.View
 
@@ -82,8 +82,8 @@ describe 'athena.lib.View', ->
     expect(renderSpy2.callCount).toBe 1
 
     # call destroy, check state,
-    view1.destroy();
-    view2.destroy();
+    view1.destroy()
+    view2.destroy()
     expect(view1.rendering).toBe false
     expect(view2.rendering).toBe false
 
