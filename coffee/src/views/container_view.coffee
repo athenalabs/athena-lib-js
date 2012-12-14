@@ -7,7 +7,7 @@ class athena.lib.ContainerView extends athena.lib.View
 
   initialize: =>
     super()
-    @content @options.content;
+    @content @options.content
 
   content: (content) =>
     if content?
