@@ -16,7 +16,7 @@ class athena.lib.View extends Backbone.View
   events: => {}
 
   initialize: ->
-    super()
+    super
 
     # Extend options with defaults.
     _.defaults @options, @defaults
@@ -27,7 +27,7 @@ class athena.lib.View extends Backbone.View
     # Bind all functions within this object (including functions defined in
     # derived classes) to `this`. This exempts you from having to bind
     # functions to their respective objects throughout the codebase.
-    _.bindAll this
+    _.bindAll @
 
     # optionally add custom class names
     if @options.extraClasses
@@ -46,7 +46,7 @@ class athena.lib.View extends Backbone.View
 
   # Render by default calls delegateEvents
   render: ->
-    super()
+    super
 
     @rendering = true
     @delegateEvents()
