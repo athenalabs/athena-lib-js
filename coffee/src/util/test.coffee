@@ -54,6 +54,9 @@ test.describeView = (View, SuperView, options, tests) ->
       expect(view instanceof View).toBe true
       expect(view.options).toBe options
 
+    it 'should have a className property of type string', ->
+      expect(typeof View.prototype.className).toBe 'string'
+
     it 'should have a defaults function, that returns an object', ->
       expect(typeof View.prototype.events).toBe 'function'
       view = new View options
