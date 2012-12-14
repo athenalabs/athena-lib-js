@@ -92,3 +92,21 @@ describe 'athena.lib.View', ->
     view2.softRender()
     expect(renderSpy1.callCount).toBe 2
     expect(renderSpy2.callCount).toBe 1
+
+  it 'should have static method classNameExtend, which extends classNames', ->
+    class Firetruck extends View
+      className: @classNameExtend 'firetruck'
+    class RedFiretruck extends Firetruck
+      className: @classNameExtend 'red'
+    class BigRedFiretruck extends RedFiretruck
+      className: @classNameExtend 'big'
+
+    view = new View()
+    firetruck = new Firetruck()
+    redFiretruck = new RedFiretruck()
+    bigRedFiretruck = new BigRedFiretruck()
+
+    expect(view.className).toBe ''
+    expect(firetruck.className).toBe 'firetruck'
+    expect(redFiretruck.className).toBe 'firetruck red'
+    expect(bigRedFiretruck.className).toBe 'firetruck red big'
