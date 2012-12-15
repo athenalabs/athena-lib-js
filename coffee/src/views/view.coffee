@@ -26,7 +26,7 @@ class athena.lib.View extends Backbone.View
     super
 
     # Extend options with defaults.
-    _.defaults @options, @defaults
+    _.defaults @options, @defaults()
 
     # If no eventhub is provided, this object is used as the eventhub.
     @eventhub = @options.eventhub || @
