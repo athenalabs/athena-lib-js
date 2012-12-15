@@ -22,7 +22,7 @@ class athena.lib.View extends Backbone.View
   # Events for view options.
   events: => {}
 
-  initialize: ->
+  initialize: =>
     super
 
     # Extend options with defaults.
@@ -31,18 +31,13 @@ class athena.lib.View extends Backbone.View
     # If no eventhub is provided, this object is used as the eventhub.
     @eventhub = @options.eventhub || @
 
-    # Bind all functions within this object (including functions defined in
-    # derived classes) to `this`. This exempts you from having to bind
-    # functions to their respective objects throughout the codebase.
-    _.bindAll @
-
     # optionally add custom class names
     if @options.extraClasses
       _.each @options.extraClasses, (name) =>
         @$el.addClass name
 
   # Utility function for the complete removal of a View.
-  destroy: ->
+  destroy: =>
     @rendering = false
     @remove()
     @unbind()
@@ -52,7 +47,7 @@ class athena.lib.View extends Backbone.View
   rendering: false
 
   # Render by default calls delegateEvents
-  render: ->
+  render: =>
     super
 
     @rendering = true
@@ -60,7 +55,7 @@ class athena.lib.View extends Backbone.View
     @
 
   # Renders only if the view is in the ``rendering`` state.
-  softRender: ->
+  softRender: =>
     if @rendering
       @render()
 
