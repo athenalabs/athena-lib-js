@@ -83,6 +83,9 @@ test.describeSubview = (options, tests) ->
   subviewAttr = options.subviewAttr
   Subview = options.Subview
 
+  checkDOM = options.checkDOM
+  checkDOM ?= (childEl, parentEl) -> childEl.parentNode is parentEl
+
   describe "#{View.name}::#{subviewAttr} subview", ->
 
     it 'should be defined on init', ->
@@ -105,7 +108,7 @@ test.describeSubview = (options, tests) ->
     it "should be a DOM child of the #{View.name}", ->
       view = new View viewOptions
       view.render()
-      expect(view[subviewAttr].el.parentNode).toEqual view.el
+      expect(checkDOM view[subviewAttr].el, view.el).toBe true
 
     tests?()
 

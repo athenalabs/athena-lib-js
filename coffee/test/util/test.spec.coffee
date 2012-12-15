@@ -77,6 +77,18 @@ describe 'athena.lib.util.test', ->
         @$el.append @namedSubview.render().el
         @
 
+    class GrandParentView extends athena.lib.View
+      initialize: =>
+        @childSubview = new ParentView @options
+        @grandchildSubview = @childSubview.namedSubview
+
+      render: =>
+        super
+        @$el.append @childSubview.render().el
+        @
+
+
+    # test with the GrandParentView
     options =
       View: ParentView
       viewOptions: {a: 1, b:2}
@@ -95,6 +107,14 @@ describe 'athena.lib.util.test', ->
 
     it 'should call the callback', ->
       expect(spy).toHaveBeenCalled()
+
+    # test with the GrandParentView
+    test.describeSubview
+      View: GrandParentView
+      subviewAttr: 'grandchildSubview'
+      Subview: ChildView
+      checkDOM: (subEl, el) -> subEl.parentNode.parentNode is el
+
 
 
   describe 'EventSpy', ->
