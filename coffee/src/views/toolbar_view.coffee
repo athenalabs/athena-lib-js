@@ -14,21 +14,26 @@ class athena.lib.ToolbarView extends athena.lib.View
   render: =>
     super
     @$el.empty()
-    _.each @buttons, @renderButton
+    @$el.append @renderButtonGroup(@buttons).children()
     @
 
   renderButton: (button) =>
+
     # append views.
     if button instanceof Backbone.View
-      @$el.append button.render().el
+      return button.render().$el
 
     # append selectors
     else if button instanceof $
-      @$el.append button
+      return button
+
+    # construct button objects from strings
+    else if _.isString button
+      return @renderButtonFromObject {text: button}
 
     # bootstrap btn-toolbar from array
     else if _.isArray button
-      # TODO implement bootstrap btn-toolbar setup.
+      return @renderButtonGroup button
 
     # bootstrap btn-group (dropdown) from object
     else if _.isObject(button) && _.isArray button.dropdown
@@ -37,9 +42,9 @@ class athena.lib.ToolbarView extends athena.lib.View
 
     # render each button
     else if _.isObject(button)
-      @$el.append @buttonFromObject button
+      return @renderButtonFromObject button
 
-  buttonFromObject: (button) =>
+  renderButtonFromObject: (button) =>
     btn = $ '<button>'
     btn.addClass 'btn'
     btn.text button.text
@@ -51,3 +56,12 @@ class athena.lib.ToolbarView extends athena.lib.View
       btn.on eventName, callback
 
     btn
+
+  renderButtonGroup: (group) =>
+    appendTo = $ '<div>'
+    appendTo.addClass 'btn-group'
+
+    _.each group, (btn) =>
+      @renderButton(btn)?.appendTo(appendTo)
+
+    appendTo

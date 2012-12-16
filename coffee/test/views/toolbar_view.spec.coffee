@@ -36,6 +36,14 @@ describe 'ToolbarView', ->
     view.render()
     expect(btn[0].parentNode).toBe view.el
 
+  it 'should render and append string', ->
+    btn = 'Button'
+    view = new ToolbarView(buttons: [btn])
+    expect(view.buttons[0]).toBe btn
+
+    view.render()
+    expect(view.$('button').text()).toBe 'Button'
+
   it 'should render and append button objects', ->
     btn = text: 'Button'
     view = new ToolbarView(buttons: [btn])
@@ -74,11 +82,21 @@ describe 'ToolbarView', ->
     view.$('button').trigger 'click'
     expect(spy).toHaveBeenCalled()
 
+  it 'should render and append button groups', ->
+    btns = [['Button1', 'Button2']]
+    view = new ToolbarView(buttons: btns)
+    expect(view.buttons).toBe btns
+
+    view.render()
+    text = view.$('button').text().replace(/\s+/g, '')
+    expect(text).toBe 'Button1Button2'
+    expect(view.$('.btn-group').children().length).toBe 2
+
   it 'should look good', ->
     # create a div to safely append content to the page
     $safe = $('<div>').addClass('athena-lib-test').appendTo('body')
 
-    btns = [{text: 'Cancel'}, {text: 'Save', className: 'btn-success'}]
+    btns = ['Cancel', {text: 'Save', className: 'btn-success'}]
     view = new ToolbarView buttons: btns
     view.render()
     $safe.append view.el
