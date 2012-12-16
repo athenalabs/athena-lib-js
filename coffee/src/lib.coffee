@@ -2,6 +2,7 @@ goog.provide 'athena.lib'
 
 goog.require 'athena.lib.util'
 goog.require 'athena.lib.util.test'
+goog.require 'athena.lib.util.keys'
 goog.require 'athena.lib.util.RemoteResource'
 goog.require 'athena.lib.util.RemoteResourceInterface'
 

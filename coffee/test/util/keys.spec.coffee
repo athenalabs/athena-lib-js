@@ -1,0 +1,109 @@
+goog.provide 'athena.lib.util.keys.spec'
+
+goog.require 'athena.lib.util.keys'
+
+describe 'athena.lib.util.keys', ->
+  keys = athena.lib.util.keys
+
+  it 'should be an object', ->
+    expect(typeof keys).toBe 'object'
+
+  it 'should correctly map keys', ->
+    expect(keys.BACKSPACE).toBe 8
+    expect(keys.TAB).toBe 9
+    expect(keys.ENTER).toBe 13
+    expect(keys.SHIFT).toBe 16
+    expect(keys.CTRL).toBe 17
+    expect(keys.ALT).toBe 18
+    expect(keys.PAUSE).toBe 19
+    expect(keys.CAPS_LOCK).toBe 20
+    expect(keys.ESCAPE).toBe 27
+    expect(keys.PAGE_UP).toBe 33
+    expect(keys.PAGE_DOWN).toBe 34
+    expect(keys.END).toBe 35
+    expect(keys.HOME).toBe 36
+    expect(keys.LEFT_ARROW).toBe 37
+    expect(keys.UP_ARROW).toBe 38
+    expect(keys.RIGHT_ARROW).toBe 39
+    expect(keys.DOWN_ARROW).toBe 40
+    expect(keys.INSERT).toBe 45
+    expect(keys.DELETE).toBe 46
+    expect(keys.KEY_0).toBe 48
+    expect(keys.KEY_1).toBe 49
+    expect(keys.KEY_2).toBe 50
+    expect(keys.KEY_3).toBe 51
+    expect(keys.KEY_4).toBe 52
+    expect(keys.KEY_5).toBe 53
+    expect(keys.KEY_6).toBe 54
+    expect(keys.KEY_7).toBe 55
+    expect(keys.KEY_8).toBe 56
+    expect(keys.KEY_9).toBe 57
+    expect(keys.KEY_A).toBe 65
+    expect(keys.KEY_B).toBe 66
+    expect(keys.KEY_C).toBe 67
+    expect(keys.KEY_D).toBe 68
+    expect(keys.KEY_E).toBe 69
+    expect(keys.KEY_F).toBe 70
+    expect(keys.KEY_G).toBe 71
+    expect(keys.KEY_H).toBe 72
+    expect(keys.KEY_I).toBe 73
+    expect(keys.KEY_J).toBe 74
+    expect(keys.KEY_K).toBe 75
+    expect(keys.KEY_L).toBe 76
+    expect(keys.KEY_M).toBe 77
+    expect(keys.KEY_N).toBe 78
+    expect(keys.KEY_O).toBe 79
+    expect(keys.KEY_P).toBe 80
+    expect(keys.KEY_Q).toBe 81
+    expect(keys.KEY_R).toBe 82
+    expect(keys.KEY_S).toBe 83
+    expect(keys.KEY_T).toBe 84
+    expect(keys.KEY_U).toBe 85
+    expect(keys.KEY_V).toBe 86
+    expect(keys.KEY_W).toBe 87
+    expect(keys.KEY_X).toBe 88
+    expect(keys.KEY_Y).toBe 89
+    expect(keys.KEY_Z).toBe 90
+    expect(keys.LEFT_META).toBe 91
+    expect(keys.RIGHT_META).toBe 92
+    expect(keys.SELECT).toBe 93
+    expect(keys.NUMPAD_0).toBe 96
+    expect(keys.NUMPAD_1).toBe 97
+    expect(keys.NUMPAD_2).toBe 98
+    expect(keys.NUMPAD_3).toBe 99
+    expect(keys.NUMPAD_4).toBe 100
+    expect(keys.NUMPAD_5).toBe 101
+    expect(keys.NUMPAD_6).toBe 102
+    expect(keys.NUMPAD_7).toBe 103
+    expect(keys.NUMPAD_8).toBe 104
+    expect(keys.NUMPAD_9).toBe 105
+    expect(keys.MULTIPLY).toBe 106
+    expect(keys.ADD).toBe 107
+    expect(keys.SUBTRACT).toBe 109
+    expect(keys.DECIMAL).toBe 110
+    expect(keys.DIVIDE).toBe 111
+    expect(keys.F1).toBe 112
+    expect(keys.F2).toBe 113
+    expect(keys.F3).toBe 114
+    expect(keys.F4).toBe 115
+    expect(keys.F5).toBe 116
+    expect(keys.F6).toBe 117
+    expect(keys.F7).toBe 118
+    expect(keys.F8).toBe 119
+    expect(keys.F9).toBe 120
+    expect(keys.F10).toBe 121
+    expect(keys.F11).toBe 122
+    expect(keys.F12).toBe 123
+    expect(keys.NUM_LOCK).toBe 144
+    expect(keys.SCROLL_LOCK).toBe 145
+    expect(keys.SEMICOLON).toBe 186
+    expect(keys.EQUALS).toBe 187
+    expect(keys.COMMA).toBe 188
+    expect(keys.DASH).toBe 189
+    expect(keys.PERIOD).toBe 190
+    expect(keys.FORWARD_SLASH).toBe 191
+    expect(keys.GRAVE_ACCENT).toBe 192
+    expect(keys.OPEN_BRACKET).toBe 219
+    expect(keys.BACK_SLASH).toBe 220
+    expect(keys.CLOSE_BRACKET).toBe 221
+    expect(keys.SINGLE_QUOTE).toBe 222
