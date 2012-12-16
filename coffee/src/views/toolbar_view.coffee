@@ -54,6 +54,11 @@ class athena.lib.ToolbarView extends athena.lib.View
     btn.addClass(button.className) if button.className
     btn.attr('id', button.id) if button.id
 
+    if button.tooltip
+      tooltip = button.tooltip
+      tooltip = {title: button.tooltip} if _.isString(tooltip)
+      btn.tooltip tooltip
+
     _.each (button.events ? {}), (callback, eventName) =>
       btn.on eventName, callback
 

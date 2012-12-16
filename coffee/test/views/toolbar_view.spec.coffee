@@ -89,6 +89,15 @@ describe 'ToolbarView', ->
 
     expect(view.$('button > i').hasClass 'icon-remove').toBe true
 
+  it 'should support tooltips in button objects', ->
+    spy = spyOn($.fn, 'tooltip').andCallThrough()
+    btn = text: 'Button', tooltip: 'Tooltip!'
+    view = new ToolbarView buttons: [btn]
+
+    expect(spy).not.toHaveBeenCalled()
+    view.render()
+    expect(spy).toHaveBeenCalled()
+
   it 'should render and append button groups', ->
     btns = [['Button1', 'Button2']]
     view = new ToolbarView(buttons: btns)
@@ -105,9 +114,9 @@ describe 'ToolbarView', ->
 
     btns = [
       'Cancel',
-      {text: 'Save', className: 'btn-success'},
+      {text: 'Save', className: 'btn-success', tooltip:'yay'},
       {text: 'Delete', icon: 'icon-remove'},
-      {icon: 'icon-remove'}
+      {icon: 'icon-remove', tooltip: {title: 'bye bye', delay: {show: 1000}}}
     ]
     view = new ToolbarView buttons: btns
     view.render()
