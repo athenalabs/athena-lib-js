@@ -47,7 +47,9 @@ class athena.lib.ToolbarView extends athena.lib.View
   renderButtonFromObject: (button) =>
     btn = $ '<button>'
     btn.addClass 'btn'
-    btn.text button.text
+
+    btn.append($("<i class='#{button.icon}'>")) if button.icon
+    btn.append(button.text) if button.text
 
     btn.addClass(button.className) if button.className
     btn.attr('id', button.id) if button.id

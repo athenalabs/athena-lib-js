@@ -82,6 +82,13 @@ describe 'ToolbarView', ->
     view.$('button').trigger 'click'
     expect(spy).toHaveBeenCalled()
 
+  it 'should support icon in button objects', ->
+    btn = text: 'Button', icon: 'icon-remove'
+    view = new ToolbarView buttons: [btn]
+    view.render()
+
+    expect(view.$('button > i').hasClass 'icon-remove').toBe true
+
   it 'should render and append button groups', ->
     btns = [['Button1', 'Button2']]
     view = new ToolbarView(buttons: btns)
@@ -96,7 +103,12 @@ describe 'ToolbarView', ->
     # create a div to safely append content to the page
     $safe = $('<div>').addClass('athena-lib-test').appendTo('body')
 
-    btns = ['Cancel', {text: 'Save', className: 'btn-success'}]
+    btns = [
+      'Cancel',
+      {text: 'Save', className: 'btn-success'},
+      {text: 'Delete', icon: 'icon-remove'},
+      {icon: 'icon-remove'}
+    ]
     view = new ToolbarView buttons: btns
     view.render()
     $safe.append view.el
