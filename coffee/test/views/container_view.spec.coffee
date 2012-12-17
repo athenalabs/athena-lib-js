@@ -17,7 +17,7 @@ describe 'ContainerView', ->
   $safe = (sel) -> $testdiv.find(sel)
 
   # util to turn a selector into html
-  toHtml = (sel) -> $('<div>').append(sel.clone()).html();
+  toHtml = (sel) -> $('<div>').append(sel.clone()).html()
 
   # sample content of different kinds to test with
   sample =

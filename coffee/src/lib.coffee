@@ -10,4 +10,4 @@ goog.require 'athena.lib.View'
 goog.require 'athena.lib.ToolbarView'
 goog.require 'athena.lib.ContainerView'
 
-(exports ? this).athena = athena
+(exports ? @).athena = athena

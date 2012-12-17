@@ -4,9 +4,9 @@ goog.provide 'athena.lib.util.RemoteResource.spec'
 goog.require 'athena.lib.util.RemoteResourceInterface'
 goog.require 'athena.lib.util.RemoteResource'
 
-util = athena.lib.util;
-RemoteResource = util.RemoteResource;
-RemoteResourceInterface = util.RemoteResourceInterface;
+util = athena.lib.util
+RemoteResource = util.RemoteResource
+RemoteResourceInterface = util.RemoteResourceInterface
 
 
 describe 'RemoteResourceInterface', ->
@@ -53,7 +53,7 @@ describe 'RemoteResource', ->
     expect(proxy.data).toThrow()
 
   it 'supports remote sync', ->
-    dataMatch = false;
+    dataMatch = false
     runs ->
       proxy.sync
         success: (data, textStatus, jqXHR) ->

@@ -2,7 +2,7 @@ goog.provide 'athena.lib.util.spec'
 
 goog.require 'athena.lib.util'
 
-util = athena.lib.util;
+util = athena.lib.util
 
 expectDerives = (a, b) -> expect(util.derives a, b).toBe true
 expectDerivesNot = (a, b) -> expect(util.derives a, b).toBe false
