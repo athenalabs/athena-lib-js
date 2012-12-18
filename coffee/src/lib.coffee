@@ -6,6 +6,8 @@ goog.require 'athena.lib.util.keys'
 goog.require 'athena.lib.util.RemoteResource'
 goog.require 'athena.lib.util.RemoteResourceInterface'
 
+goog.require 'athena.lib.Model'
+
 goog.require 'athena.lib.View'
 goog.require 'athena.lib.ToolbarView'
 goog.require 'athena.lib.ContainerView'
