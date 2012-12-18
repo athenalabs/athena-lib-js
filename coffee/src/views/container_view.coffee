@@ -8,7 +8,7 @@ class athena.lib.ContainerView extends athena.lib.View
   className: @classNameExtend 'container-view'
 
   initialize: =>
-    super()
+    super
     @content @options.content
 
   content: (content) =>
@@ -20,7 +20,7 @@ class athena.lib.ContainerView extends athena.lib.View
     @_content
 
   render: =>
-    super()
+    super
 
     @$el.empty()
 
