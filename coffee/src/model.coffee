@@ -16,7 +16,6 @@ class athena.lib.Model extends Backbone.Model
   #    m.addProperty 'title', 'Untitled'
   #    m.addProperty 'description', undefined
   #    m.addProperty 'age', 0
-  #
   properties: => {}
 
   initialize: =>
@@ -31,11 +30,9 @@ class athena.lib.Model extends Backbone.Model
   #    m.addProperty 'age', 0
   #
   # After the above:
-  #
   #    m.title()              is equivalent to         m.get 'title'
   #
   # And,
-  #
   #    m.title 'Title'        is equivalent to         m.set 'title', 'Title'
   #
   # And age has an initial value of 0
