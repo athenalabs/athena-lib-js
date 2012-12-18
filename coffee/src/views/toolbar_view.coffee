@@ -9,7 +9,7 @@ class athena.lib.ToolbarView extends athena.lib.View
 
   initialize: =>
     super
-    @buttons = @options.buttons ? []
+    @buttons = @options.buttons || []
 
   render: =>
     super
