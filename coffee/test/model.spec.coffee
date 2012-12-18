@@ -98,12 +98,13 @@ describe 'Model', ->
 
     describe 'Model::addProperties', ->
 
-      it 'should error out if properties is not a map', ->
+      it 'should error out if properties is not a map or string array', ->
         m = new Model
         expect(-> m.addProperties()).toThrow()
         expect(-> m.addProperties [1, 2, 3]).toThrow()
         expect(-> m.addProperties 'title').toThrow()
         expect(-> m.addProperties 432141).toThrow()
+        expect(-> m.addProperties ['1', '2', '3']).not.toThrow()
 
       it 'should call addProperty with each key-value pair', ->
         m = new Model

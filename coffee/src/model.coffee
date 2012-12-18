@@ -55,7 +55,10 @@ class athena.lib.Model extends Backbone.Model
     unless _.isObject properties
       throw new Error "Expected `properties` parameter of type object."
 
-    _.each properties, (value, property) => @addProperty property, value
+    if _.isArray properties
+      _.each properties, (property) => @addProperty property
+    else
+      _.each properties, (value, property) => @addProperty property, value
 
 
   # ensure clone is deeply-copied, as acorn data is a multilevel object
