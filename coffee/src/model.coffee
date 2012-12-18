@@ -37,11 +37,8 @@ class athena.lib.Model extends Backbone.Model
   #
   # And age has an initial value of 0
   addProperty: (property, defaultValue) =>
-    unless property?
-      throw new Error "Expected `property` parameter to be defined."
-
     unless _.isString property
-      throw new Error "Expected `property` to be of type string."
+      throw new Error "Expected `property` parameter of type string."
 
     @[property] = (value) =>
       if value?
@@ -55,11 +52,8 @@ class athena.lib.Model extends Backbone.Model
   # Defines a property for each string name in `properties`
   # Calls @addProperty (above) on each element of the dictionary.
   addProperties: (properties) =>
-    if not properties?
-      throw new Error "Expected `properties` parameter to be defined."
-
     unless _.isObject properties
-      throw new Error "Expected `properties` parameter to be of type Array."
+      throw new Error "Expected `properties` parameter of type object."
 
     _.each properties, (value, property) => @addProperty property, value
 
