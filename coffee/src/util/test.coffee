@@ -94,7 +94,7 @@ test.describeSubview = (options, tests) ->
 
     it "should be an instanceof #{Subview.name}", ->
       view = new View viewOptions
-      expect(view[subviewAttr] instanceof Subview)
+      expect(view[subviewAttr] instanceof Subview).toBe true
 
     it 'should not be rendering initially', ->
       view = new View viewOptions
