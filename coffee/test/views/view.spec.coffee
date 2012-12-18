@@ -3,14 +3,18 @@ goog.provide 'athena.lib.View.spec'
 goog.require 'athena.lib.util'
 goog.require 'athena.lib.View'
 
-
-describe 'athena.lib.View', ->
+describe 'View', ->
   View = athena.lib.View
-
-  test.describeView View, Backbone.View
+  lib = athena.lib
+  util = athena.lib.util
 
   it 'should be part of athena.lib', ->
     expect(View).toBeDefined()
+
+  it 'should derive from Backbone.View', ->
+    expect(util.derives View, Backbone.View).toBe true
+
+  test.describeView View, Backbone.View
 
   it 'should have an eventhub option, with the Events interface', ->
     expect(_.has View.prototype.defaults(), 'eventhub').toBe true
