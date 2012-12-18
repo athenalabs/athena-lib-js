@@ -1,5 +1,5 @@
-goog.provide 'athena.lib.util.RemoteResourceInterface.spec'
-goog.provide 'athena.lib.util.RemoteResource.spec'
+goog.provide 'athena.lib.util.specs.RemoteResourceInterface'
+goog.provide 'athena.lib.util.specs.RemoteResource'
 
 goog.require 'athena.lib.util.RemoteResourceInterface'
 goog.require 'athena.lib.util.RemoteResource'

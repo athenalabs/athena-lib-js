@@ -1,4 +1,4 @@
-goog.provide 'athena.lib.ContainerView.spec'
+goog.provide 'athena.lib.specs.ContainerView'
 
 goog.require 'athena.lib.util'
 goog.require 'athena.lib.ContainerView'

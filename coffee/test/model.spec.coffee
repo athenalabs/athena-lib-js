@@ -1,4 +1,4 @@
-goog.provide 'athena.lib.Model.spec'
+goog.provide 'athena.lib.specs.Model'
 
 describe 'Model', ->
   Model = athena.lib.Model

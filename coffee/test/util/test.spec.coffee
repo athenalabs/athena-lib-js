@@ -1,4 +1,4 @@
-goog.provide 'athena.lib.util.test.spec'
+goog.provide 'athena.lib.util.specs.test'
 
 goog.require 'athena.lib.util.test'
 
