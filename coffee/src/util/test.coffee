@@ -38,6 +38,11 @@ test.throwsExceptionWithString = (str, fn, args) ->
 # creates a jasmine describeView block
 test.describeView = (View, SuperView, options, tests) ->
 
+  # accept tests as third argument
+  if typeof options == 'function'
+    tests = options
+    options = {}
+
   options ?= {}
 
   describe "#{View.name} view tests", ->
