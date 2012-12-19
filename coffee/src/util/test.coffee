@@ -128,7 +128,9 @@ class test.EventSpy
   reset: =>
     @triggered = false
     @triggerCount = 0
+    @arguments = []
 
   trigger: =>
     @triggered = true
     @triggerCount++
+    @arguments.push _.toArray arguments

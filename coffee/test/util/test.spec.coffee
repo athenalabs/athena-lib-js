@@ -193,3 +193,30 @@ describe 'athena.lib.util.test', ->
       expect(s.triggerCount).toBe 3
       m.trigger 'event'
       expect(s.triggerCount).toBe 4
+
+    it 'should track the arguments of event calls', ->
+      m = new Backbone.Model
+      s = new test.EventSpy m, 'all'
+      expect(s.arguments).toEqual []
+      m.trigger 'a'
+      expect(s.arguments).toEqual [['a']]
+      m.trigger 'b', 1
+      expect(s.arguments).toEqual [['a'], ['b', 1]]
+      m.trigger 'c', 'hi', 'hello'
+      expect(s.arguments).toEqual [['a'], ['b', 1], ['c', 'hi', 'hello']]
+
+    it 'should wipe the arguments on calling reset', ->
+      m = new Backbone.Model
+      s = new test.EventSpy m, 'all'
+      expect(s.arguments).toEqual []
+      m.trigger 'a'
+      expect(s.arguments).toEqual [['a']]
+      m.trigger 'b', 1
+      expect(s.arguments).toEqual [['a'], ['b', 1]]
+      m.trigger 'c', 'hi', 'hello'
+      expect(s.arguments).toEqual [['a'], ['b', 1], ['c', 'hi', 'hello']]
+
+      s.reset()
+      expect(s.arguments).toEqual []
+      m.trigger 'b', {pedro: 'ah'}
+      expect(s.arguments).toEqual [['b', {pedro: 'ah'}]]
