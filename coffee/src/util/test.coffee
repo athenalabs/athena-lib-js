@@ -2,16 +2,16 @@ goog.provide 'athena.lib.util.test'
 
 test = athena.lib.util.test
 
-# construct, render, and display view
+# constructs, renders, and displays view
 test.view_with_options = (options, ViewClass, appendTo) ->
-  ViewClass = ViewClass || lib.View
-  appendTo = appendTo || 'body'
+  ViewClass = ViewClass or lib.View
+  appendTo = appendTo or 'body'
   view = new ViewClass options
   view.render()
   $(appendTo).append view.$el
   view
 
-# construct, render, and display view with content
+# constructs, renders, and displays view with content
 test.view_with_content = (content) ->
   view = test.view_with_options.apply @, _.rest arguments
   view.$el.append content
@@ -19,7 +19,7 @@ test.view_with_content = (content) ->
 
 
 # Returns true if `fn` throws an exception whose message contains `str` when
-# called with parameters in array `args`.
+# called with parameters in array `args`. Returns false otherwise.
 # Returns false otherwise.
 test.throwsExceptionWithString = (str, fn, args) ->
   success = false
@@ -35,7 +35,7 @@ test.throwsExceptionWithString = (str, fn, args) ->
 
   success
 
-# Utility function to create a describeView block
+# creates a jasmine describeView block
 test.describeView = (View, SuperView, options, tests) ->
 
   options ?= {}
@@ -74,7 +74,7 @@ test.describeView = (View, SuperView, options, tests) ->
     tests?()
 
 
-# Utility function to create a describeSubview block
+# creates a describeSubview block
 test.describeSubview = (options, tests) ->
 
   View = options.View
@@ -113,7 +113,7 @@ test.describeSubview = (options, tests) ->
     tests?()
 
 
-# a jasmine-style spy for Backbone events.
+# a jasmine-style spy for Backbone events
 class test.EventSpy
 
   constructor: (@target, @eventName) ->
