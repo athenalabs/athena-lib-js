@@ -7,8 +7,8 @@ goog.require 'athena.lib.util.RemoteResource'
 goog.require 'athena.lib.util.RemoteResourceInterface'
 
 goog.require 'athena.lib.Model'
-
 goog.require 'athena.lib.Router'
+goog.require 'athena.lib.App'
 
 goog.require 'athena.lib.View'
 goog.require 'athena.lib.ToolbarView'
