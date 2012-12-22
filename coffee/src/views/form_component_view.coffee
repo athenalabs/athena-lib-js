@@ -101,6 +101,10 @@ class athena.lib.FormComponentView extends athena.lib.View
     @
 
 
+  # proxy the InputView's value
+  value: (value) =>
+    @inputView.value value
+
   # proxy the InputView's validation errors
   validationErrors: (value) =>
     @inputView.validationErrors(value)
@@ -113,7 +117,7 @@ class athena.lib.FormComponentView extends athena.lib.View
     if @options.noValidation
       return true
 
-    errors = @validationErrors @inputView.value()
+    errors = @validationErrors @value()
     if _.isEmpty errors
       return true
 

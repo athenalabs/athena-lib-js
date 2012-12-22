@@ -66,6 +66,20 @@ describe 'athena.lib.FormComponentView', ->
     checkDOM: (child, parent) -> child.parentNode.parentNode is parent
 
 
+  describe 'FormComponentView::value', ->
+
+    it 'should be a function', ->
+      expect(typeof FormComponentView::value).toBe 'function'
+
+    it 'should be a getter/setter (of @inputView.value)', ->
+      view = new FormComponentView
+      _.each ['foo', 'bar', 'baz', '{}', '[1, 2, 3]'], (val) ->
+        expect(view.value()).toBe view.inputView.value()
+        expect(view.value(val)).toEqual view.inputView.value()
+        expect(view.value()).toEqual val
+        expect(view.value()).toEqual view.inputView.value()
+
+
   describe 'FormComponentView::validationErrors', ->
 
     it 'should be a function', ->
