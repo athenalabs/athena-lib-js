@@ -63,11 +63,16 @@ test.describeView = (View, SuperView, options, tests) ->
       expect(typeof View.prototype.className).toBe 'string'
 
     it 'should have a defaults function, that returns an object', ->
-      expect(typeof View.prototype.events).toBe 'function'
+      expect(typeof View.prototype.defaults).toBe 'function'
       view = new View options
       expect(typeof view.defaults()).toBe 'object'
 
     it 'should have an events function, that returns an object', ->
+      expect(typeof View.prototype.events).toBe 'function'
+      view = new View options
+      expect(typeof view.events()).toBe 'object'
+
+    it 'should have an elAttributes function, that returns an object', ->
       expect(typeof View.prototype.events).toBe 'function'
       view = new View options
       expect(typeof view.events()).toBe 'object'
@@ -77,6 +82,20 @@ test.describeView = (View, SuperView, options, tests) ->
       expect(view.render()).toBe view
 
     tests?()
+
+
+# creates a jasmine describeDefaults block
+test.describeDefaults = (Klass, defaults, options, tests) ->
+
+  options ?= {}
+
+  describe "#{Klass.name}::defaults", ->
+
+    objectDefaults = new Klass(options).defaults()
+
+    _.each defaults, (value, name) ->
+      it "should have options.#{name} default to #{JSON.stringify(value)}", ->
+        expect(objectDefaults[name]).toEqual value
 
 
 # creates a describeSubview block

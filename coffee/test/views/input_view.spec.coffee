@@ -1,7 +1,7 @@
 goog.provide 'athena.lib.specs.InputView'
 goog.require 'athena.lib.InputView'
 
-describe 'InputView', ->
+describe 'athena.lib.InputView', ->
   InputView = athena.lib.InputView
 
 
@@ -15,12 +15,6 @@ describe 'InputView', ->
     it 'should have tagName input', ->
       expect(InputView::tagName).toBe 'input'
 
-    it 'should have option `type` (default: \'text\')', ->
-      expect(new InputView().defaults().type).toBe 'text'
-
-    it 'should have option `placeholder` (default: \'\')', ->
-      expect(new InputView().defaults().placeholder).toBe ''
-
     it 'should look good', ->
       # create a div to safely append content to the page
       $safe = $('<div>').addClass('athena-lib-test').appendTo('body')
@@ -31,6 +25,10 @@ describe 'InputView', ->
         view.render()
         view.$el.css('margin', '20px').css('display', 'block')
         $safe.append view.$el
+
+    test.describeDefaults InputView,
+      type: 'text'
+      placeholder: ''
 
     describe 'InputView::elAttributes', ->
 
