@@ -15,4 +15,6 @@ goog.require 'athena.lib.ToolbarView'
 goog.require 'athena.lib.ContainerView'
 goog.require 'athena.lib.PageView'
 
+goog.require 'athena.lib.InputView'
+
 (exports ? @).athena = athena
