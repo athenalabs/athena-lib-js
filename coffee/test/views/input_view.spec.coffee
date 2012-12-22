@@ -15,20 +15,37 @@ describe 'athena.lib.InputView', ->
     it 'should have tagName input', ->
       expect(InputView::tagName).toBe 'input'
 
-    it 'should look good', ->
+    it 'should look good and work well', ->
       # create a div to safely append content to the page
       $safe = $('<div>').addClass('athena-lib-test').appendTo('body')
 
       types = ['text', 'password', 'radio', 'checkbox']
-      _.each types, (type) ->
+      views = _.map types, (type) ->
         view = new InputView type: type
         view.render()
         view.$el.css('margin', '20px').css('display', 'block')
         $safe.append view.$el
+        view
+
+      views[0].$el.attr 'placeholder',
+        'what is the answer to life, the universe, and everything?'
+
+      views[0].$el.css 'width', '400px'
+
+      views[0].validationErrors = (value) ->
+        unless value == '42'
+          console.log 'nope'
+          return ['nope']
+
+        console.log 'yep'
+        []
+
 
     test.describeDefaults InputView,
       type: 'text'
       placeholder: ''
+      validateOnBlur: true
+      blurOnEnter: true
 
     describe 'InputView::elAttributes', ->
 
@@ -51,13 +68,13 @@ describe 'athena.lib.InputView', ->
     it 'should be a function', ->
       expect(typeof InputView::value).toBe 'function'
 
-    it 'should be a getter/setter of model.value', ->
+    it 'should be a getter/setter (of $el.val)', ->
       view = new InputView
-      _.each ['foo', 'bar', 'baz', {}, [1, 2, 3]], (val) ->
-        expect(view.value()).toBe view.model.get 'value'
-        expect(view.value(val)).toBe val
-        expect(view.value()).toBe val
-        expect(view.value()).toBe view.model.get 'value'
+      _.each ['foo', 'bar', 'baz', '{}', '[1, 2, 3]'], (val) ->
+        expect(view.value()).toBe view.$el.val()
+        expect(view.value(val)).toEqual val
+        expect(view.value()).toEqual val
+        expect(view.value()).toEqual view.$el.val()
 
 
   describe 'InputView::validationErrors', ->
@@ -82,7 +99,7 @@ describe 'athena.lib.InputView', ->
   describe 'InputView::validate', ->
 
     it 'should be a function', ->
-      expect(typeof InputView::validationErrors).toBe 'function'
+      expect(typeof InputView::validate).toBe 'function'
 
     it 'should return a boolean condition', ->
       expect(_.isBoolean new InputView().validate()).toBe true

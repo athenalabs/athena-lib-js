@@ -19,13 +19,28 @@ class athena.lib.InputView extends athena.lib.View
     # the placeholder for the html input
     placeholder: ''
 
+    # whether to validate on blur
+    validateOnBlur: true
+
+    # whether to blur on enter
+    blurOnEnter: true
+
+
+
+  events: => _.extend super,
+    'blur': =>
+      if @options.validateOnBlur
+        @validate()
+
+    'keyup': (event) =>
+      if @options.blurOnEnter and event.keyCode is util.keys.ENTER
+        @$el.trigger 'blur'
+
 
   initialize: =>
     super
+    @value @options.value
 
-    @model ?= new Backbone.Model
-    unless @model instanceof Backbone.Model
-      throw new Error 'InputView requires `model` of type Backbone.Model'
 
   elAttributes: =>
     placeholder: @options.placeholder
@@ -36,9 +51,8 @@ class athena.lib.InputView extends athena.lib.View
   # sets and/or gets the input value
   value: (value) =>
     if value?
-      @model.set 'value', value
-      @softRender()
-    @model.get 'value', value
+      @$el.val value
+    @$el.val()
 
 
   # returns validation errors
@@ -47,4 +61,4 @@ class athena.lib.InputView extends athena.lib.View
 
   # returns whether or not value is valid
   validate: =>
-    _.isEmpty @validationErrors()
+    _.isEmpty @validationErrors @value()
