@@ -114,3 +114,20 @@ describe 'View', ->
     expect(firetruck.className).toBe 'firetruck'
     expect(redFiretruck.className).toBe 'firetruck red'
     expect(bigRedFiretruck.className).toBe 'firetruck red big'
+
+
+  describe 'View::elAttributes', ->
+
+    it 'should be a function', ->
+      expect(typeof View::elAttributes).toBe 'function'
+
+    it 'should return an object', ->
+      expect(typeof new View().elAttributes()).toBe 'object'
+
+    it 'should set these on the element on render', ->
+      class TestView extends View
+        elAttributes: => {foo: 'bar', biz: 'baz'}
+      view = new TestView
+      view.render()
+      expect(view.$el.attr 'foo').toEqual 'bar'
+      expect(view.$el.attr 'biz').toEqual 'baz'

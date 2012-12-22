@@ -22,6 +22,9 @@ class athena.lib.View extends Backbone.View
   # Events for view options.
   events: => {}
 
+  # Attributes to set onto the element on render
+  elAttributes: => {}
+
   initialize: =>
     super
 
@@ -52,6 +55,10 @@ class athena.lib.View extends Backbone.View
 
     @rendering = true
     @delegateEvents()
+
+    # set all elAttributes directly on the element
+    _.each @elAttributes(), (val, key) => @$el.attr key, val
+
     @
 
   # Renders only if the view is in the ``rendering`` state.
