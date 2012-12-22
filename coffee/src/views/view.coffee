@@ -36,7 +36,9 @@ class athena.lib.View extends Backbone.View
 
     # optionally add custom class names
     if @options.extraClasses
-      _.each @options.extraClasses, (name) =>
+      classes = @options.extraClasses
+      classes = [classes] if _.isString classes
+      _.each classes, (name) =>
         @$el.addClass name
 
   # Utility function for the complete removal of a View.
