@@ -28,13 +28,8 @@ class athena.lib.InputView extends athena.lib.View
 
 
   events: => _.extend super,
-    'blur': =>
-      if @options.validateOnBlur
-        @validate()
-
-    'keyup': (event) =>
-      if @options.blurOnEnter and event.keyCode is util.keys.ENTER
-        @$el.trigger 'blur'
+    'blur': @onBlur
+    'keyup': @onKeyup
 
 
   initialize: =>
@@ -48,7 +43,7 @@ class athena.lib.InputView extends athena.lib.View
     value: @value()
 
 
-  # sets and/or gets the input value
+  # sets and/or gets the input value - override to store elsewhere
   value: (value) =>
     if value?
       @$el.val value
@@ -62,3 +57,16 @@ class athena.lib.InputView extends athena.lib.View
   # returns whether or not value is valid
   validate: =>
     _.isEmpty @validationErrors @value()
+
+  # events
+  onBlur: (event) =>
+    if @options.validateOnBlur
+      @validate()
+
+  onKeyup: (event) =>
+    if event.keyCode is util.keys.ENTER
+      @onEnter(event)
+
+  onEnter: (event) =>
+    if @options.blurOnEnter
+      @$el.trigger 'blur'

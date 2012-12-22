@@ -1,8 +1,10 @@
 goog.provide 'athena.lib.specs.InputView'
 goog.require 'athena.lib.InputView'
+goog.require 'athena.lib.util.keys'
 
 describe 'athena.lib.InputView', ->
   InputView = athena.lib.InputView
+  keys = athena.lib.util.keys
 
 
   it 'should be part of athena.lib', ->
@@ -110,3 +112,61 @@ describe 'athena.lib.InputView', ->
       _.each errors, (validationErrors) ->
         view.validationErrors = validationErrors
         expect(view.validate()).toEqual _.isEmpty validationErrors()
+
+  describe 'InputView::events', ->
+
+    describe 'InputView::onBlur', ->
+
+      it 'should call InputView::onBlur when the element blurs', ->
+        view = new InputView
+        spy = spyOn view, 'onBlur'
+        view.delegateEvents()
+        view.$el.trigger 'blur'
+        expect(spy).toHaveBeenCalled()
+
+      it 'should call InputView::validate if options.validateOnBlur', ->
+        view = new InputView validateOnBlur: true
+        spy = spyOn view, 'validate'
+        view.$el.trigger 'blur'
+        expect(spy).toHaveBeenCalled()
+
+      it 'should call InputView::validate iff options.validateOnBlur', ->
+        view = new InputView validateOnBlur: false
+        spy = spyOn view, 'validate'
+        view.$el.trigger 'blur'
+        expect(spy).not.toHaveBeenCalled()
+
+
+    describe 'InputView::onKeyup', ->
+
+      it 'should call InputView::onKeyup when keyup happens on element', ->
+        view = new InputView
+        spy = spyOn view, 'onKeyup'
+        view.delegateEvents()
+        view.$el.trigger 'keyup'
+        expect(spy).toHaveBeenCalled()
+
+
+    describe 'InputView::onEnter', ->
+      keyupEnter = $.Event 'keyup'
+      keyupEnter.keyCode = keys.ENTER
+
+      it 'should call InputView::onEnter if keyup event.keyCode is ENTER', ->
+        view = new InputView
+        spy = spyOn view, 'onEnter'
+        view.$el.trigger keyupEnter
+        expect(spy).toHaveBeenCalled()
+
+      it 'should trigger blur if options.blurOnEnter', ->
+        view = new InputView blurOnEnter: true
+        spy = spyOn view, 'onBlur'
+        view.delegateEvents()
+        view.$el.trigger keyupEnter
+        expect(spy).toHaveBeenCalled()
+
+      it 'should trigger blur iff options.blurOnEnter', ->
+        view = new InputView blurOnEnter: false
+        spy = spyOn view, 'onBlur'
+        view.delegateEvents()
+        view.$el.trigger keyupEnter
+        expect(spy).not.toHaveBeenCalled()
