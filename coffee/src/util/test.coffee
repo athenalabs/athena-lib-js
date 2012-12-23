@@ -129,6 +129,11 @@ test.describeSubview = (options, tests) ->
       view.render()
       expect(view[subviewAttr].rendering).toBe true
 
+    it "should share eventhub with #{View.name}", ->
+      view = new View viewOptions
+      view.render()
+      expect(view[subviewAttr].eventhub).toBe view.eventhub
+
     it "should be a DOM child of the #{View.name}", ->
       view = new View viewOptions
       view.render()

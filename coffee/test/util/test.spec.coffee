@@ -69,8 +69,9 @@ describe 'athena.lib.util.test', ->
 
     class ParentView extends athena.lib.View
       initialize: =>
+        super
         ParentView.calledWithOptions = @options
-        @namedSubview = new ChildView
+        @namedSubview = new ChildView eventhub: @eventhub
 
       render: =>
         super
@@ -79,7 +80,9 @@ describe 'athena.lib.util.test', ->
 
     class GrandParentView extends athena.lib.View
       initialize: =>
-        @childSubview = new ParentView @options
+        super
+        options = _.extend {}, @options, eventhub: @eventhub
+        @childSubview = new ParentView options
         @grandchildSubview = @childSubview.namedSubview
 
       render: =>

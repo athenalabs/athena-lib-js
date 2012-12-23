@@ -30,6 +30,7 @@ class athena.lib.NavigationView extends athena.lib.View
     super
 
     @toolbarView = new athena.lib.ToolbarView
+      eventhub: @eventhub
       buttons: @options.buttons
 
 

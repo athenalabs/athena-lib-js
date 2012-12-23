@@ -54,7 +54,10 @@ class athena.lib.FormComponentView extends athena.lib.View
   initialize: =>
     super
 
-    @inputView = @options.inputView ? new InputView @options
+    @inputView = @options.inputView
+    @inputView ?= new InputView _.extend {}, @options,
+      eventhub: @eventhub
+
     unless @inputView instanceof InputView
       TypeError @inputView, 'InputView'
 
