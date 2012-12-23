@@ -152,9 +152,16 @@ class test.EventSpy
   reset: =>
     @triggered = false
     @triggerCount = 0
+    @_callsSinceLastCheck = 0
     @arguments = []
 
   trigger: =>
     @triggered = true
     @triggerCount++
+    @_callsSinceLastCheck++
     @arguments.push _.toArray arguments
+
+  callsSinceLastCheck: =>
+    calls = @_callsSinceLastCheck
+    @_callsSinceLastCheck = 0
+    calls
