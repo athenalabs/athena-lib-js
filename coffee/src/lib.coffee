@@ -18,6 +18,7 @@ goog.require 'athena.lib.ContainerView'
 goog.require 'athena.lib.PageView'
 goog.require 'athena.lib.NavigationView'
 goog.require 'athena.lib.NavListView'
+goog.require 'athena.lib.NavListTabView'
 
 goog.require 'athena.lib.InputView'
 goog.require 'athena.lib.FormComponentView'
