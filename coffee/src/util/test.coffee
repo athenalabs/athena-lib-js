@@ -165,3 +165,26 @@ class test.EventSpy
     calls = @_callsSinceLastCheck
     @_callsSinceLastCheck = 0
     calls
+
+# Tests that each of an array of functions causes expected EventSpy behavior.
+#
+# spies: an object of EventSpy instances.
+# fns: an array of functions to run, each of which returns an object containing
+#   expected spy behaviors. The keys of this object should match the keys of
+#   the spies expected to have been triggered; when a key's value is not
+#   undefined, that spy's call arguments will be tested as well.
+test.expectEventSpyBehaviors = (spies, fns) ->
+  # run each action and extract expectations about which spies were called
+  for fn in fns
+    expectations = fn() ? {}
+
+    for spyName, spy of spies
+      expectedCall = if expectations.hasOwnProperty spyName then 1 else 0
+      callsSinceLastCheck = spy.callsSinceLastCheck()
+      expect(callsSinceLastCheck).toBe expectedCall
+
+      # if an event with particular arguments was expected, test that it was
+      # called with those arguments
+      if expectedCall and (args = expectations[spyName])?
+        args = [args] unless _.isArray args
+        expect(_.last spy.arguments).toEqual args
