@@ -179,9 +179,9 @@ test.expectEventSpyBehaviors = (spies, fns) ->
     expectations = fn() ? {}
 
     for spyName, spy of spies
-      expectedCall = if expectations.hasOwnProperty spyName then 1 else 0
+      expectedCall = expectations.hasOwnProperty spyName
       callsSinceLastCheck = spy.callsSinceLastCheck()
-      expect(callsSinceLastCheck).toBe expectedCall
+      expect(!!callsSinceLastCheck).toBe expectedCall
 
       # if an event with particular arguments was expected, test that it was
       # called with those arguments
