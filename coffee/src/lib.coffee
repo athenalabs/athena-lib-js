@@ -24,4 +24,7 @@ goog.require 'athena.lib.InputView'
 goog.require 'athena.lib.FormComponentView'
 goog.require 'athena.lib.FormView'
 
+goog.require 'athena.lib.TrackerInterface'
+goog.require 'athena.lib.MixpanelTracker'
+
 (exports ? @).athena = athena
