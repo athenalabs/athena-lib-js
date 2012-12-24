@@ -43,6 +43,9 @@ describe 'athena.lib.FormView', ->
           return ['WRONG']
         []
 
+    test.describeDefaults FormView,
+      noValidation: false
+
 
     describe 'FormView::elAttributes', ->
 
@@ -200,6 +203,21 @@ describe 'athena.lib.FormView', ->
       view.addComponentView cmp
 
       expect(view.validate()).toBe false
+
+    it 'should return true if options.noValidation', ->
+      view = new FormView noValidation: false
+      cmp = new FormComponentView
+      cmp.validationErrors = -> return ['fail!']
+      view.addComponentView cmp
+
+      expect(view.validate()).toBe false
+
+      view = new FormView noValidation: true
+      cmp = new FormComponentView
+      cmp.validationErrors = -> return ['fail!']
+      view.addComponentView cmp
+
+      expect(view.validate()).toBe true
 
 
   describe 'FormView::submit', ->

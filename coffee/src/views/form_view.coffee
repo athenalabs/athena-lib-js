@@ -14,6 +14,11 @@ class athena.lib.FormView extends athena.lib.View
   className: @classNameExtend 'form-view'
 
 
+  defaults: => _.extend super,
+    # whether to skip validation checks
+    noValidation: false
+
+
   elAttributes: => _.extend super,
     # disables automatic form submission on enter
     onsubmit: 'return false;'
@@ -61,6 +66,9 @@ class athena.lib.FormView extends athena.lib.View
 
 
   validate: =>
+    if @options.noValidation
+      return true
+
     _.all @componentViews, (view) -> view.validate()
 
 
