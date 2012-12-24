@@ -23,6 +23,9 @@ class athena.lib.ToolbarInputView extends athena.lib.InputView
       eventhub: @eventhub
       buttons: @options.buttons
 
+    # proxy toolbar events
+    @listenTo @toolbarView, 'all', _.bind(@trigger, @)
+
 
   render: =>
     super
