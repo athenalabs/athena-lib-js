@@ -30,6 +30,7 @@ describe 'athena.lib.util.test', ->
       expect(test.throwsExceptionWithString '42', fn, []).toBe false
       expect(test.throwsExceptionWithString '42', fn, [ 'ey' ]).toBe false
 
+
   describe 'test.describeView', ->
     class View extends athena.lib.View
       initialize: =>
@@ -117,7 +118,6 @@ describe 'athena.lib.util.test', ->
       subviewAttr: 'grandchildSubview'
       Subview: ChildView
       checkDOM: (subEl, el) -> subEl.parentNode.parentNode is el
-
 
 
   describe 'EventSpy', ->
@@ -223,3 +223,104 @@ describe 'athena.lib.util.test', ->
       expect(s.arguments).toEqual []
       m.trigger 'b', {pedro: 'ah'}
       expect(s.arguments).toEqual [['b', {pedro: 'ah'}]]
+
+
+  describe 'expectEventSpyBehaviors', ->
+
+    it 'should be a function', ->
+      expect(typeof test.expectEventSpyBehaviors).toBe 'function'
+
+    it 'should test that events were triggered', ->
+      m = new Backbone.Model
+      spies =
+        seeSpy: new test.EventSpy m, 'see'
+        hearSpy: new test.EventSpy m, 'hear'
+        speakSpy: new test.EventSpy m, 'speak'
+        allSpy: new test.EventSpy m, 'all'
+
+      fns = [
+        ->
+          m.trigger 'see'
+          expectations =
+            seeSpy: undefined
+            allSpy: undefined
+        ->
+          m.trigger 'hear'
+          expectations =
+            hearSpy: undefined
+            allSpy: undefined
+        ->
+          m.trigger 'speak'
+          expectations =
+            speakSpy: undefined
+            allSpy: undefined
+        ->
+          m.trigger 'see'
+          m.trigger 'hear'
+          expectations =
+            seeSpy: undefined
+            hearSpy: undefined
+            allSpy: undefined
+        ->
+          m.trigger 'see'
+          m.trigger 'hear'
+          m.trigger 'speak'
+          expectations =
+            seeSpy: undefined
+            hearSpy: undefined
+            speakSpy: undefined
+            allSpy: undefined
+      ]
+
+      test.expectEventSpyBehaviors spies, fns
+
+    it 'should test that events were triggered with specific arguments', ->
+      m = new Backbone.Model
+      spies =
+        seeSpy: new test.EventSpy m, 'see'
+        hearSpy: new test.EventSpy m, 'hear'
+        speakSpy: new test.EventSpy m, 'speak'
+        allSpy: new test.EventSpy m, 'all'
+
+      fns = [
+        ->
+          evil = 'murdering children'
+          m.trigger 'see', evil
+          expectations =
+            seeSpy: evil
+            allSpy: ['see', evil]
+        ->
+          evil = 'tripping an old lady'
+          m.trigger 'hear', evil
+          expectations =
+            hearSpy: evil
+            allSpy: ['hear', evil]
+        ->
+          evil = 'stealing candy from children'
+          m.trigger 'speak', evil
+          expectations =
+            speakSpy: evil
+            allSpy: ['speak', evil]
+        ->
+          evil = 'slipping a laxative into the bake sale cookies'
+          m.trigger 'hear', evil
+          m.trigger 'speak', evil
+          expectations =
+            hearSpy: evil
+            speakSpy: evil
+            allSpy: ['speak', evil]
+        ->
+          evil = 'throwing a red ball in front of a blind man\'s guide dog, and
+              yelling fetch'
+          m.trigger 'speak', evil
+          m.trigger 'hear', evil
+          m.trigger 'see', evil
+          expectations =
+            seeSpy: evil
+            hearSpy: evil
+            speakSpy: evil
+            allSpy: ['see', evil]
+      ]
+
+      test.expectEventSpyBehaviors spies, fns
+
