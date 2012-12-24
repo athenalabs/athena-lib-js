@@ -59,7 +59,9 @@ class athena.lib.View extends Backbone.View
     @delegateEvents()
 
     # set all elAttributes directly on the element
-    _.each @elAttributes(), (val, key) => @$el.attr key, val
+    _.each @elAttributes(), (val, key) =>
+      unless @$el.attr(key) == val
+        @$el.attr key, val
 
     @
 
