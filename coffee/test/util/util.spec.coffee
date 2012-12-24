@@ -2,10 +2,10 @@ goog.provide 'athena.lib.specs.util'
 
 goog.require 'athena.lib.util'
 
-util = athena.lib.util
-
 
 describe 'athena.lib.util', ->
+  util = athena.lib.util
+
   it 'should be part of athena.lib', ->
     expect(athena.lib.util).toBeDefined()
 
