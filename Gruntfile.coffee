@@ -22,6 +22,7 @@ module.exports = (grunt) ->
     # libraries to load in the frontend
     frontend_libs: [
       'lib/closure/library/closure/goog/base.js'     # for dependencies
+      'lib/mixpanel/mixpanel.js'                     # for analytics
       'node_modules/jquery-browser/lib/jquery.js'    # for dom manipulation
       'node_modules/underscore/underscore.js'        # for utilities
       'node_modules/backbone/backbone.js'            # for mvc apps
