@@ -151,6 +151,39 @@ test.describeSubview = (options, tests) ->
     tests?()
 
 
+
+# creates a describeFormComponent block
+test.describeFormComponent = (options, tests) ->
+
+  View = options.View
+  name = options.name
+
+  describe "#{View.name}::#{name}", ->
+
+    it 'should be a FormComponentView', ->
+      view = new View
+      expect(view[name] instanceof athena.lib.FormComponentView).toBe true
+
+    if athena.lib.util.derives View, athena.lib.FormView
+      it "should be added to #{View.name}::componentViews", ->
+        view = new View
+        expect(_.contains view.componentViews, view[name]).toBe true
+
+      it "should share the eventhub with #{View.name}", ->
+        view = new View
+        expect(view[name].eventhub).toBe view.eventhub
+
+    fieldOptions = 'id type label placeholder helpBlock helpInline'.split(' ')
+    _.each fieldOptions, (option) ->
+      if options[option]
+        it "should have #{option}: #{options[option]}", ->
+          view = new View
+          expect(view[name].options[option]).toBe options[option]
+
+    tests?()
+
+
+
 # a jasmine-style spy for Backbone events
 class test.EventSpy
 

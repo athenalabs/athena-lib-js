@@ -1,6 +1,7 @@
 goog.provide 'athena.lib.util.specs.test'
 
 goog.require 'athena.lib.util.test'
+goog.require 'athena.lib.FormView'
 
 describe 'athena.lib.util.test', ->
   test = athena.lib.util.test
@@ -118,6 +119,33 @@ describe 'athena.lib.util.test', ->
       subviewAttr: 'grandchildSubview'
       Subview: ChildView
       checkDOM: (subEl, el) -> subEl.parentNode.parentNode is el
+
+
+
+  describe 'test.describeFormComponent', ->
+
+    options =
+      id: 'foo'
+      type: 'text'
+      label: 'Foo'
+      placeholder: 'enter foo'
+      helpBlock: 'The Foo to end all Foos'
+      helpInline: 'Some Foo, that is.'
+
+
+    class FooFormView extends athena.lib.FormView
+
+      initialize: =>
+        super
+        @foo = new athena.lib.FormComponentView _.extend {}, options,
+          eventhub: @eventhub
+        @addComponentView @foo
+
+
+    test.describeFormComponent _.extend {}, options,
+      View: FooFormView
+      name: 'foo'
+
 
 
   describe 'EventSpy', ->
