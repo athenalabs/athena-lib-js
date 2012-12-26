@@ -95,9 +95,13 @@ describe 'athena.lib.App', ->
       app = new App
       expect(app.router instanceof App::Router).toBe true
 
-    it 'should have the App as eventhub', ->
+    it 'should have the App as @eventhub', ->
       app = new App
       expect(app.router.eventhub).toBe app
+
+    it 'should have the App as @app', ->
+      app = new App
+      expect(app.router.app).toBe app
 
 
   describe 'App::showPage', ->

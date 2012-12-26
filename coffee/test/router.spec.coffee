@@ -35,6 +35,12 @@ describe 'athena.lib.Router', ->
     router2 = new Router eventhub: router
     expect(router2.eventhub).toBe router
 
+  it 'should have an app option', ->
+    router = new Router()
+    expect(router.app).not.toBeDefined()
+    router2 = new Router app: router
+    expect(router2.app).toBe router
+
   describe 'Router::navigateBrowser', ->
 
     it 'should be a function', ->

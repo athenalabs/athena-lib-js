@@ -22,7 +22,7 @@ class athena.lib.App
 
   initialize: =>
     @view = new @View eventhub: @eventhub
-    @router = new @Router eventhub: @eventhub
+    @router = new @Router eventhub: @eventhub, app: @
 
 
   showPage: (page) =>

@@ -7,6 +7,7 @@ class athena.lib.Router extends Backbone.Router
     super
     @options = options ? {}
     @eventhub = @options.eventhub ? @
+    @app = @options.app
 
     # listen to Go events, which provide a URL to navigate to
     @eventhub.on 'Go', (url) => @go url
