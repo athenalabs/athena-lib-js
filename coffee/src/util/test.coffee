@@ -2,6 +2,8 @@ goog.provide 'athena.lib.util.test'
 
 test = athena.lib.util.test
 
+
+
 # constructs, renders, and displays view
 test.view_with_options = (options, ViewClass, appendTo) ->
   ViewClass = ViewClass or lib.View
@@ -11,11 +13,14 @@ test.view_with_options = (options, ViewClass, appendTo) ->
   $(appendTo).append view.$el
   view
 
+
+
 # constructs, renders, and displays view with content
 test.view_with_content = (content) ->
   view = test.view_with_options.apply @, _.rest arguments
   view.$el.append content
   view
+
 
 
 # Returns true if `fn` throws an exception whose message contains `str` when
@@ -34,6 +39,7 @@ test.throwsExceptionWithString = (str, fn, args) ->
     success = error.message.search(str) >= 0
 
   success
+
 
 # creates a jasmine describeView block
 test.describeView = (View, SuperView, options, tests) ->
@@ -84,6 +90,7 @@ test.describeView = (View, SuperView, options, tests) ->
     tests?()
 
 
+
 # creates a jasmine describeDefaults block
 test.describeDefaults = (Klass, defaults, options, tests) ->
 
@@ -98,6 +105,7 @@ test.describeDefaults = (Klass, defaults, options, tests) ->
         expect(objectDefaults[name]).toEqual value
 
 
+
 # creates a describeSubview block
 test.describeSubview = (options, tests) ->
 
@@ -109,6 +117,7 @@ test.describeSubview = (options, tests) ->
 
   checkDOM = options.checkDOM
   checkDOM ?= (childEl, parentEl) -> childEl.parentNode is parentEl
+
 
   describe "#{View.name}::#{subviewAttr} subview", ->
 
@@ -145,9 +154,11 @@ test.describeSubview = (options, tests) ->
 # a jasmine-style spy for Backbone events
 class test.EventSpy
 
+
   constructor: (@target, @eventName) ->
     @reset()
     @target.on eventName ? 'all', @trigger
+
 
   reset: =>
     @triggered = false
@@ -155,16 +166,20 @@ class test.EventSpy
     @_callsSinceLastCheck = 0
     @arguments = []
 
+
   trigger: =>
     @triggered = true
     @triggerCount++
     @_callsSinceLastCheck++
     @arguments.push _.toArray arguments
 
+
   callsSinceLastCheck: =>
     calls = @_callsSinceLastCheck
     @_callsSinceLastCheck = 0
     calls
+
+
 
 # Tests that each of an array of functions causes expected EventSpy behavior.
 #
