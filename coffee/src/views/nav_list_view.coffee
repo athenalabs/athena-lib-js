@@ -15,6 +15,7 @@ class athena.lib.NavListView extends athena.lib.View
 
   events: => _.extend super,
     'click li[data-nav]': @onSelectElement
+    'click a[data-nav]': @onSelectElement
 
 
   defaults: => _.extend super,
@@ -59,6 +60,7 @@ class athena.lib.NavListView extends athena.lib.View
 
     if item.link
       $link = $('<a>').attr 'href', item.link
+      $link.attr('data-nav', item.id) if item.id
       $link.append $elem.children()
       $elem.append $link
 
