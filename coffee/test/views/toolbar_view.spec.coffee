@@ -108,6 +108,17 @@ describe 'ToolbarView', ->
     expect(text).toBe 'Button1Button2'
     expect(view.$('.btn-group').children().length).toBe 2
 
+  it 'should render and append dropdown buttons', ->
+    btn = text: 'Dropdown', dropdown: [{text: 'Foo'}, {text: 'Bar'}]
+    view = new ToolbarView(buttons: [btn])
+    expect(view.buttons).toEqual [btn]
+
+    view.render()
+    expect(view.$('button').text().replace(/\s+/g, '')).toBe 'Dropdown'
+    expect(view.$('a').text().replace(/\s+/g, '')).toBe 'FooBar'
+    expect(view.$('.dropdown-menu').children().length).toBe 2
+
+
   it 'should look good', ->
     # create a div to safely append content to the page
     $safe = $('<div>').addClass('athena-lib-test').appendTo('body')
@@ -116,7 +127,9 @@ describe 'ToolbarView', ->
       'Cancel',
       {text: 'Save', className: 'btn-success', tooltip:'yay'},
       {text: 'Delete', icon: 'icon-remove'},
-      {icon: 'icon-remove', tooltip: {title: 'bye bye', delay: {show: 1000}}}
+      {icon: 'icon-remove', tooltip: {title: 'bye bye', delay: {show: 1000}}},
+      [['Foo', 'Bar']],
+      {text: 'Foo', dropdown: [{text: 'Bar'}, {text: 'Baz'}]}
     ]
     view = new ToolbarView buttons: btns
     view.render()

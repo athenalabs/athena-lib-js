@@ -1,21 +1,25 @@
 goog.provide 'athena.lib.ToolbarView'
-
 goog.require 'athena.lib.View'
+
 
 # view for generating and containing buttons
 class athena.lib.ToolbarView extends athena.lib.View
 
+
   className: @classNameExtend 'toolbar-view'
+
 
   initialize: =>
     super
     @buttons = @options.buttons || []
+
 
   render: =>
     super
     @$el.empty()
     @$el.append @renderButtonGroup(@buttons).children()
     @
+
 
   renderButton: (button) =>
 
@@ -37,12 +41,12 @@ class athena.lib.ToolbarView extends athena.lib.View
 
     # bootstrap btn-group (dropdown) from object
     else if _.isObject(button) && _.isArray button.dropdown
-      # TODO implement renderDropdownButtonObject
-      # @renderDropdownButtonObject button
+      return @renderDropdownButtonFromObject button
 
     # render each button
     else if _.isObject(button)
       return @renderButtonFromObject button
+
 
   renderButtonFromObject: (button) =>
     btn = $ '<button>'
@@ -63,6 +67,33 @@ class athena.lib.ToolbarView extends athena.lib.View
       btn.on eventName, callback
 
     btn
+
+
+  renderDropdownButtonFromObject: (button) =>
+    # generate the dropdown button element
+    btn = $('<div class="btn-group">')
+    btn.addClass(button.className) if button.className
+    btn.attr('id', button.id) if button.id
+
+    # generate the toggle element
+    toggle = $('<button class="btn dropdown-toggle" data-toggle="dropdown">')
+    toggle.append($("<i class='#{button.icon}'>")) if button.icon
+    toggle.text(button.text) if button.text
+    toggle.append " <i class='caret'>"
+    btn.append toggle
+
+    # generate all the dropdown list elements
+    list = $('<ul class="dropdown-menu">')
+    _.each button.dropdown, (button) =>
+      item = $('<a href="#">')
+      item.append($("<i class='#{button.leftIcon}'>")) if button.leftIcon
+      item.text(button.text) if button.text
+      item.append($("<i class='#{button.rightIcon}'>")) if button.rightIcon
+      list.append $('<li>').append item
+    btn.append list
+
+    btn
+
 
   renderButtonGroup: (group) =>
     appendTo = $ '<div>'
