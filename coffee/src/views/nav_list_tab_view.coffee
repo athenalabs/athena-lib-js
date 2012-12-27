@@ -6,12 +6,12 @@ goog.require 'athena.lib.View'
 class athena.lib.NavListTabView extends athena.lib.View
 
 
-  className: @classNameExtend 'nav-list-tab-view'
+  className: @classNameExtend 'nav-list-tab-view row-fluid'
 
 
   template: _.template '''
-    <div id="side"></div>
-    <div id="content"></div>
+    <div class="nav-list-tab-side span4"></div>
+    <div class="nav-list-tab-content span8"></div>
     '''
 
 
@@ -45,15 +45,16 @@ class athena.lib.NavListTabView extends athena.lib.View
     super
     @$el.empty()
     @$el.html @template()
-    @$('#side').append @navListView.render().el
+    @$('.nav-list-tab-side').append @navListView.render().el
     @renderView @selected
     @
 
 
   renderView: (id) =>
+    @navListView.highlightItem id
     view = @views[id]
     if view
-      @$('#content').append view.render().el
+      @$('.nav-list-tab-content').append view.render().el
     @
 
 
