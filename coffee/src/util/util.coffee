@@ -15,3 +15,6 @@ util.derives = derives = (child, parent) ->
 
 util.isOrDerives = (child, parent) ->
   child == parent or derives child, parent
+
+util.isStrictObject = (obj) ->
+  obj.toString() == '[object Object]'
