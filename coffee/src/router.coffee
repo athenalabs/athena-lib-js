@@ -12,6 +12,7 @@ class athena.lib.Router extends Backbone.Router
     # listen to Go events, which provide a URL to navigate to
     @eventhub.on 'Go', (url) => @go url
 
+
   go: (url) =>
     unless url?
       throw new Error 'Router::go requires a `url` parameter'
@@ -24,5 +25,29 @@ class athena.lib.Router extends Backbone.Router
     # otherwise, just navigate the router
     @navigate url, trigger: true
 
+
   navigateBrowser: (url) =>
     window.location.href = url
+
+
+  # captures all links and routes them iff they are under the same origin,
+  # (instead of causing a browser a page-load.)
+  routeInternalLinks: =>
+
+    $(document).on 'click', 'a:not([data-bypass])', (event) ->
+
+      # target must be an anchor tag
+      unless @nodeName.toLowerCase() is 'a'
+        return event
+
+      # origin must be our origin (or this is not local)
+      unless @origin is window.location.origin
+        return event
+
+      # prevent href from triggering a page reload
+      event.preventDefault()
+
+      # navigate to the route described by path
+      router.navigate @pathname, trigger: true
+
+      return false
