@@ -5,6 +5,11 @@ class athena.lib.Model extends Backbone.Model
 
   # static method for adding property manager methods
   @property: (property, options={}) ->
+    unless _.isString property
+      throw new Error 'property method: first argument must be a string'
+    unless athena.lib.util.isStrictObject options
+      options = {}
+
     (value) ->
       if options.setter isnt false and value?
         @set property, value
