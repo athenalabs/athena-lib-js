@@ -44,9 +44,9 @@ describe 'athena.lib.TitleView', ->
       expect(view.$(view.options.titleTag).text()).toBe 'foo'
 
     it 'should render an img with given icon src', ->
-      view = new TitleView model: {text: 'foo', icon: 'bar.png'}
+      view = new TitleView model: {text: 'foo', icon: '/bar.png'}
       view.render()
-      expect(view.$('img').attr 'src').toBe 'bar.png'
+      expect(view.$('img').attr 'src').toBe '/bar.png'
 
     it 'should render a link with given link href', ->
       view = new TitleView model: {text: 'foo', link: '/bar'}
