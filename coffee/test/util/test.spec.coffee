@@ -32,6 +32,31 @@ describe 'athena.lib.util.test', ->
       expect(test.throwsExceptionWithString '42', fn, [ 'ey' ]).toBe false
 
 
+  describe 'test.describeProperty', ->
+    toSeekTheGrail = 'To seek the Holy Grail'
+    class Knight extends athena.lib.Model
+      name: @property 'name'
+      title: @property('title', setter: false)
+      color: @property('color', default: 'blue')
+      quest: @property('quest', {default: toSeekTheGrail, setter: false})
+
+    @callback = ->
+      it 'should run this test within the block', ->
+        expect(true).toBe true
+
+    spy = spyOn(@, 'callback').andCallThrough()
+
+    test.describeProperty Knight, 'name', {}, {}, @callback
+    test.describeProperty Knight, 'title', {title: 'Sir'}, setter: false
+    test.describeProperty Knight, 'color', {}, default: 'blue'
+    test.describeProperty Knight, 'quest', {},
+      default: toSeekTheGrail
+      setter: false
+
+    it 'should call the callback', ->
+      expect(spy).toHaveBeenCalled()
+
+
   describe 'test.describeView', ->
     class View extends athena.lib.View
       initialize: =>

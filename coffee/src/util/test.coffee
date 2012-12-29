@@ -41,6 +41,59 @@ test.throwsExceptionWithString = (str, fn, args) ->
   success
 
 
+
+# creates a jasmine describeProperty block
+test.describeProperty = (Model, name, options, propOptions, tests) ->
+
+  options ?= {}
+  propOptions ?= {}
+  propOptions.setter ?= true
+
+  describe "#{Model.name}::#{name}", ->
+
+    it 'should be a function', ->
+      expect(typeof Model::[name]).toBe 'function'
+
+    it 'should get the value of the attribute', ->
+      m = new Model options
+      expect(m[name]()).toEqual (propOptions.default ? m.get name)
+      m.set name, 'foo'
+      expect(m[name]()).toEqual m.get name
+      expect(m[name]()).toEqual 'foo'
+
+    if propOptions.setter is false
+      it 'should NOT set the value of the attribute (setter is false)', ->
+        m = new Model options
+        expect(m[name]()).toEqual (propOptions.default ? m.get name)
+        expect(m[name]()).not.toEqual 'foo'
+        expect(m[name]('foo')).toEqual (propOptions.default ? m.get name)
+        expect(m[name]()).toEqual (propOptions.default ? m.get name)
+        expect(m[name]()).not.toEqual 'foo'
+
+    else
+      it 'should set the value of the attribute', ->
+        m = new Model options
+        expect(m[name]()).not.toEqual 'foo'
+        expect(m[name]()).toEqual (propOptions.default ? m.get name)
+        expect(m[name]('foo')).toEqual m.get name
+        expect(m[name]()).toEqual 'foo'
+
+    it "should use default value #{propOptions.default}", ->
+      m = new Model options
+      if propOptions.default?
+        expect(m.get name).not.toEqual propOptions.default
+
+      if m.get(name)
+        expect(m[name]()).toEqual m.get(name)
+      else if options[name]? and options[name] != propOptions.default
+        expect(m[name]()).not.toEqual propOptions.default
+      else
+        expect(m[name]()).toEqual propOptions.default
+
+    tests?()
+
+
+
 # creates a jasmine describeView block
 test.describeView = (View, SuperView, options, tests) ->
 
