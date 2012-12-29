@@ -34,6 +34,9 @@ class athena.lib.Router extends Backbone.Router
   # (instead of causing a browser a page-load.)
   routeInternalLinks: =>
 
+    # needed in the function below (not bound, need to preserve `this`)
+    router = @
+
     $(document).on 'click', 'a:not([data-bypass])', (event) ->
 
       # target must be an anchor tag
