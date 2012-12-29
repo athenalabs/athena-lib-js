@@ -4,11 +4,11 @@ goog.provide 'athena.lib.Model'
 class athena.lib.Model extends Backbone.Model
 
   # static method for adding property manager methods
-  @property: (property, setter = true) ->
+  @property: (property, options={}) ->
     (value) ->
-      if setter and value?
+      if options.setter isnt false and value?
         @set property, value
-      @get property
+      @get(property) ? options.default
 
   # ensure clone is deeply-copied, as acorn data is a multilevel object
   # this approach to deep-copy is ok because all our data should be
