@@ -12,7 +12,94 @@ describe 'Model', ->
 
   describe 'Model::property', ->
 
-    it 'should create property get/setters by default', ->
+    it 'should be a static function', ->
+      expect(Model.property).toEqual jasmine.any Function
+
+    it 'should error out unless the first argument is a string', ->
+      expect(-> Model.property()).toThrow()
+      expect(-> Model.property {}).toThrow()
+      expect(-> Model.property {}, 'cheese').toThrow()
+      expect(-> Model.property turn: 'along').toThrow()
+      expect(-> Model.property []).toThrow()
+      expect(-> Model.property [], 'bow').toThrow()
+      expect(-> Model.property ['out', 'up']).toThrow()
+      expect(-> Model.property 87).toThrow()
+      expect(-> Model.property 87, 'shoe').toThrow()
+      expect(-> Model.property '').not.toThrow()
+      expect(-> Model.property '87', []).not.toThrow()
+      expect(-> Model.property 'draw', {}).not.toThrow()
+
+    it 'should return a function', ->
+      expect(Model.property 'name').toEqual jasmine.any Function
+
+    it 'should return a function that calls @get', ->
+      class User extends Model
+        name: @property 'name'
+
+      user = new User()
+      spyOn user, 'get'
+
+      user.name()
+      expect(user.get).toHaveBeenCalled()
+
+    it 'should return a function that calls @set', ->
+      class User extends Model
+        name: @property 'name'
+
+      user = new User()
+      spyOn user, 'set'
+
+      user.name 'park jae-sang'
+      expect(user.set).toHaveBeenCalled()
+
+    it 'should return a function that gets an attribute value', ->
+      class User extends Model
+        name: @property 'name'
+        dreams: @property 'dreams'
+        favoriteColor: @property 'favoriteColor'
+
+      user = new User()
+
+      user.set 'name', 'park jae-sang'
+      expect(user.name()).toBe 'park jae-sang'
+      user.set 'name', 'psy'
+      expect(user.name()).toBe 'psy'
+
+      user.set 'dreams', ['horseback riding']
+      expect(user.dreams()).toEqual ['horseback riding']
+      user.set 'dreams', ['horseback riding', 'day tripping']
+      expect(user.dreams()).toEqual ['horseback riding', 'day tripping']
+
+      user.set 'favoriteColor', ''
+      expect(user.favoriteColor()).toBe ''
+      user.set 'favoriteColor', 'yellow'
+      expect(user.favoriteColor()).toBe 'yellow'
+
+    it 'should return a function that sets an attribute value', ->
+      class User extends Model
+        name: @property 'name'
+        dreams: @property 'dreams'
+        favoriteColor: @property 'favoriteColor'
+
+      user = new User()
+
+      expect(user.name 'park jae-sang').toBe 'park jae-sang'
+      expect(user.get 'name').toBe 'park jae-sang'
+      expect(user.name 'psy').toBe 'psy'
+      expect(user.get 'name').toBe 'psy'
+
+      expect(user.dreams ['horseback riding']).toEqual ['horseback riding']
+      expect(user.get 'dreams').toEqual ['horseback riding']
+      expect(user.dreams ['horseback riding', 'day tripping'])
+          .toEqual ['horseback riding', 'day tripping']
+      expect(user.get 'dreams').toEqual ['horseback riding', 'day tripping']
+
+      expect(user.favoriteColor '').toBe ''
+      expect(user.get 'favoriteColor').toBe ''
+      expect(user.favoriteColor 'yellow').toBe 'yellow'
+      expect(user.get 'favoriteColor').toBe 'yellow'
+
+    it 'should return a function that works with various value types', ->
       class User extends Model
         name: @property 'name'
         dreams: @property 'dreams'
@@ -31,12 +118,36 @@ describe 'Model', ->
           .toEqual ['horseback riding', 'day tripping']
       expect(user.dreams()).toEqual ['horseback riding', 'day tripping']
 
-      expect(user.favoriteColor '').toBe ''
-      expect(user.favoriteColor()).toBe ''
-      expect(user.favoriteColor 'yellow').toBe 'yellow'
-      expect(user.favoriteColor()).toBe 'yellow'
+      expect(user.favoriteColor {}).toEqual {}
+      expect(user.favoriteColor()).toEqual {}
+      expect(user.favoriteColor {forWomanPantSuits: 'yellow'})
+          .toEqual {forWomanPantSuits: 'yellow'}
+      expect(user.favoriteColor()).toEqual {forWomanPantSuits: 'yellow'}
 
-    it 'should offer read-only getters when options.setter is false', ->
+    it 'should enable property name and attribute name to be different', ->
+      class User extends Model
+        moniker: @property 'name'
+        dreams: @property 'hobbies'
+        bestHue: @property 'favoriteColor'
+
+      user = new User()
+
+      expect(user.moniker 'park jae-sang').toBe 'park jae-sang'
+      expect(user.get 'name').toBe 'park jae-sang'
+      user.set 'name', 'psy'
+      expect(user.moniker()).toBe 'psy'
+
+      expect(user.dreams ['horseback riding']).toEqual ['horseback riding']
+      expect(user.get 'hobbies').toEqual ['horseback riding']
+      user.set 'hobbies', ['horseback riding', 'day tripping']
+      expect(user.dreams()).toEqual ['horseback riding', 'day tripping']
+
+      expect(user.bestHue '').toBe ''
+      expect(user.get 'favoriteColor').toBe ''
+      user.set 'favoriteColor', 'yellow'
+      expect(user.bestHue()).toBe 'yellow'
+
+    it 'should return a read-only getter when options.setter is false', ->
       class User extends Model
         height: @property('height', setter: false)
         birthday: @property('birthday', setter: false)
@@ -59,7 +170,8 @@ describe 'Model', ->
       expect(user.eyeColor()).toBe 'brown'
       expect(user.eyeColor 'red').toBe 'brown'
 
-    it 'should return default values passed with options.default', ->
+    it 'should return a function whose default value can be set with
+        options.default', ->
       class Knight extends Model
         color: @property('color', default: 'blue')
 
