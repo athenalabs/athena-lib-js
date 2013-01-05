@@ -1,5 +1,6 @@
 goog.provide 'athena.lib.ModalView'
 goog.require 'athena.lib.View'
+goog.require 'athena.lib.ToolbarView'
 goog.require 'athena.lib.util.keys'
 
 # base class for fields of different types
@@ -16,6 +17,9 @@ class athena.lib.ModalView extends athena.lib.View
     fadeIn: true
     fadeOut: false
     backdrop: true # if 'static', don't close on backdrop clicks
+    additionalButtons:
+      before: []
+      after: []
 
 
   events: => _.extend super,
@@ -32,19 +36,36 @@ class athena.lib.ModalView extends athena.lib.View
       <h3 class="modal-title"><%= title %></h3>
     </div>
     <div class="modal-body"></div>
-    <div class="modal-footer">
-      <a href="#" class="btn dismiss-modal"><%= closeButtonName %></a>
-    </div>
+    <div class="modal-footer"></div>
     '''
+
+
+  initialize: =>
+    super
+    @_initializeToolbarView()
+
+
+  _initializeToolbarView: =>
+    buttons = @_toolbarButtons()
+
+    if _.isArray @options.additionalButtons?.before
+      buttons = @options.additionalButtons.before.concat buttons
+
+    if _.isArray @options.additionalButtons?.after
+      buttons = buttons.concat @options.additionalButtons.after
+
+    @toolbarView = new athena.lib.ToolbarView
+      eventhub: @eventhub
+      buttons: buttons
 
 
   render: =>
     super
 
     @$el.empty()
-    @$el.append @template
-      title: @options.title
-      closeButtonName: @options.closeButtonName
+    @$el.append @template title: @options.title
+
+    @$('.modal-footer').append @toolbarView.render().el
 
     @$el.modal
       show: @options.show # whether to show the modal initially
@@ -52,6 +73,10 @@ class athena.lib.ModalView extends athena.lib.View
       backdrop: 'static' # use our own backdrop.click event
 
     @
+
+
+  _toolbarButtons: =>
+    [{text: @options.closeButtonName, className: 'dismiss-modal'}]
 
 
   show: =>

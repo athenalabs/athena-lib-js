@@ -1,5 +1,6 @@
 goog.provide 'athena.lib.specs.ModalView'
 goog.require 'athena.lib.ModalView'
+goog.require 'athena.lib.ToolbarView'
 goog.require 'athena.lib.util.keys'
 goog.require 'athena.lib.util.test'
 
@@ -58,7 +59,11 @@ describe 'athena.lib.ModalView', ->
   describeView ModalView, athena.lib.View, ->
 
     it 'should look good and work well', ->
-      modalView = new ModalView title: 'Grand Modal of Platonic Intentions'
+      title = 'Grand Modal of Platonic Intentions'
+      additionalButtons =
+        before: [{text: 'Push Me', className: 'btn-primary push-me'}]
+
+      modalView = new ModalView title: title, additionalButtons: additionalButtons
       button = $('<button>').addClass('btn btn-primary').text('Show Modal')
           .click(modalView.show)
 
@@ -80,29 +85,62 @@ describe 'athena.lib.ModalView', ->
       fadeIn: true
       fadeOut: false
       backdrop: true
+      additionalButtons:
+        before: []
+        after: []
 
 
     it 'should display a title when passed in as an option', ->
       title = 'Grand Modal of Platonic Intentions'
-
       modalView = new ModalView title: title
       $div.append modalView.render().el
 
       expect(modalView.$('.modal-title').text()).toBe title
 
-    it 'should by default display a close button with name "Close"', ->
-      modalView = new ModalView
-      $div.append modalView.render().el
 
-      expect(modalView.$('.modal-footer').find('a').text()).toBe 'Close'
+    describe 'ModalView: toolbarView', ->
 
-    it 'should display a close button with a configurable name', ->
-      buttonName = 'Cancel'
+      it 'should create a ToolbarView instance on initialize', ->
+        modalView = new ModalView
+        ToolbarView = athena.lib.ToolbarView
+        expect(modalView.toolbarView instanceof ToolbarView).toBe true
 
-      modalView = new ModalView closeButtonName: buttonName
-      $div.append modalView.render().el
 
-      expect(modalView.$('.modal-footer').find('a').text()).toBe buttonName
+      it 'should display a close button with a configurable name', ->
+        buttonName = 'Cancel'
+
+        modalView = new ModalView closeButtonName: buttonName
+        modalView.render()
+
+        expect(modalView.$('.modal-footer').find('button').text()).toBe buttonName
+
+      it 'should allow custom buttons added before the close button', ->
+        additionalButtons =
+          before: [{text: 'Push Me', className: 'btn-primary push-me'}]
+
+        modalView = new ModalView additionalButtons: additionalButtons
+        modalView.render()
+
+        buttons = modalView.$('.modal-footer').find 'button'
+
+        expect(buttons.length).toBe 2
+        expect($(buttons[0]).hasClass 'push-me').toBe true
+
+      it 'should allow custom buttons added after the close button', ->
+        additionalButtons =
+          after: [
+            {text: 'Push Me', className: 'btn-primary push-me'}
+            {text: 'Pull Me', className: 'btn-primary pull-me'}
+          ]
+
+        modalView = new ModalView additionalButtons: additionalButtons
+        modalView.render()
+
+        buttons = modalView.$('.modal-footer').find 'button'
+
+        expect(buttons.length).toBe 3
+        expect($(buttons[1]).hasClass 'push-me').toBe true
+        expect($(buttons[2]).hasClass 'pull-me').toBe true
 
 
   cdescribe 'ModalView: display management', ->
@@ -325,7 +363,7 @@ describe 'athena.lib.ModalView', ->
         expectModalShownStatus modalView, true
 
         # close button in footer
-        modalView.$('.modal-footer').find('a').click()
+        modalView.$('.modal-footer').find('button').click()
         expectModalShownStatus modalView, false
 
         modalView.show()
