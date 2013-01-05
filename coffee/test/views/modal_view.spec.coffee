@@ -1,13 +1,16 @@
 goog.provide 'athena.lib.specs.ModalView'
 goog.require 'athena.lib.ModalView'
 goog.require 'athena.lib.util.keys'
+goog.require 'athena.lib.util.test'
 
-# xdescribe and xit blocks pass when run in browser but cannot be handled
-# by phantomJS
 
 describe 'athena.lib.ModalView', ->
   ModalView = athena.lib.ModalView
   keys = athena.lib.util.keys
+
+  disable = true
+  message = 'Breaks on PhantomJS'
+  [cit, cdescribe] = athena.lib.util.test.conditionalDisablers disable, message
   
   # handles for before and after each blocks
   $div = undefined
@@ -102,7 +105,7 @@ describe 'athena.lib.ModalView', ->
       expect(modalView.$('.modal-footer').find('.close').text()).toBe buttonName
 
 
-  xdescribe 'ModalView: display management', ->
+  cdescribe 'ModalView: display management', ->
 
     it 'should by default not show the modal', ->
       modalView = new ModalView disableTransitionOptions()
@@ -142,7 +145,7 @@ describe 'athena.lib.ModalView', ->
         modalView = new ModalView disableTransitionOptions()
         $div.append modalView.render().el
 
-      xit 'should call `_onShow` just before modal shows', ->
+      cit 'should call `_onShow` just before modal shows', ->
         spyOn(modalView, '_onShow').andCallFake runOnce ->
           expectModalShownStatus modalView, false
 
@@ -153,7 +156,7 @@ describe 'athena.lib.ModalView', ->
         expect(modalView._onShow).toHaveBeenCalled()
         expectModalShownStatus modalView, true
 
-      xit 'should call `_onShown` just after modal shows', ->
+      cit 'should call `_onShown` just after modal shows', ->
         spyOn(modalView, '_onShown').andCallFake runOnce ->
           expectModalShownStatus modalView, true
 
@@ -164,7 +167,7 @@ describe 'athena.lib.ModalView', ->
         expect(modalView._onShown).toHaveBeenCalled()
         expectModalShownStatus modalView, true
 
-      xit 'should call `_onHide` just before modal hides', ->
+      cit 'should call `_onHide` just before modal hides', ->
         modalView.show()
 
         spyOn(modalView, '_onHide').andCallFake runOnce ->
@@ -177,7 +180,7 @@ describe 'athena.lib.ModalView', ->
         expect(modalView._onHide).toHaveBeenCalled()
         expectModalShownStatus modalView, false
 
-      xit 'should call `_onHidden` just after modal hides', ->
+      cit 'should call `_onHidden` just after modal hides', ->
         modalView.show()
 
         spyOn(modalView, '_onHidden').andCallFake runOnce ->
@@ -284,7 +287,7 @@ describe 'athena.lib.ModalView', ->
         modalView.$el.trigger keyupEscape
         expect(modalView._onGlobalKeyupEscape).toHaveBeenCalled()
 
-      xit 'should hide modal when enter is pressed while modal is shown', ->
+      cit 'should hide modal when enter is pressed while modal is shown', ->
         modalView.show()
 
         keyupEnter = $.Event 'keyup'
@@ -294,7 +297,7 @@ describe 'athena.lib.ModalView', ->
         modalView.$el.trigger keyupEnter
         expectModalShownStatus modalView, false
 
-      xit 'should hide modal when escape is pressed while modal is shown', ->
+      cit 'should hide modal when escape is pressed while modal is shown', ->
         modalView.show()
 
         keyupEscape = $.Event 'keyup'
@@ -305,7 +308,7 @@ describe 'athena.lib.ModalView', ->
         expectModalShownStatus modalView, false
 
 
-    xdescribe 'ModalView: click dismiss-modal event', ->
+    cdescribe 'ModalView: click dismiss-modal event', ->
 
       it 'should hide when an element with a dismiss-modal class is clicked', ->
         modalView = new ModalView disableTransitionOptions()
@@ -334,7 +337,7 @@ describe 'athena.lib.ModalView', ->
         expectModalShownStatus modalView, false
 
 
-    xdescribe 'ModalView: click backdrop event', ->
+    cdescribe 'ModalView: click backdrop event', ->
 
       it 'should by default hide when the backdrop is clicked', ->
         modalView = new ModalView disableTransitionOptions()
@@ -359,7 +362,7 @@ describe 'athena.lib.ModalView', ->
         expectModalShownStatus modalView, true
 
 
-  xdescribe 'ModalView: transitions', ->
+  cdescribe 'ModalView: transitions', ->
 
     it 'should by default fade in when shown', ->
       modalView = new ModalView
