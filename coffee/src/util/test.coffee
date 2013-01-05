@@ -289,3 +289,22 @@ test.expectEventSpyBehaviors = (spies, fns) ->
       if expectedCall and (args = expectations[spyName])?
         args = [args] unless _.isArray args
         expect(_.last spy.arguments).toEqual args
+
+
+
+# disable an it block in a way that displays warnings in tests
+test.xit = (description, fn, warning) ->
+  warning ?= '---- TODO'
+  message = "#{warning}: #{description}"
+  console.log message
+  it message, ->
+
+
+
+# disable a describe block in a way that displays warnings in tests
+test.xdescribe = (description, fn, warning) ->
+  warning ?= '---- TODO'
+  message = "#{warning}: #{description}"
+  console.log message
+  describe message, ->
+    it '', ->
