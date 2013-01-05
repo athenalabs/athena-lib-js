@@ -33,6 +33,12 @@ describe 'athena.lib.FormModalView', ->
       button = $('<button>').addClass('btn btn-primary')
           .text('Show Form Modal').click(fmv.show)
 
+      fakeSubmission = (values, fmv) ->
+        console.log fmv.values()
+        fmv.clear()
+
+      fmv.on 'FormModalView:Submit', fakeSubmission
+
       $div.append fmv.render().el
       $div.append button
 
@@ -82,3 +88,15 @@ describe 'athena.lib.FormModalView', ->
     text = 'haiii'
     fmv._textareaInputView.value text
     expect(fmv.values().textarea).toBe text
+
+
+  it 'should have a clear method that clears values', ->
+    fmv = new FormModalView
+    fmv.render()
+
+    text = 'haiii'
+    fmv._textareaInputView.value text
+    expect(fmv.values().textarea).toBe text
+
+    fmv.clear()
+    expect(fmv.values().textarea).toBe ''

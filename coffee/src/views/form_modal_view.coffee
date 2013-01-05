@@ -63,6 +63,10 @@ class athena.lib.FormModalView extends athena.lib.ModalView
     @formView.values()
 
 
+  clear: =>
+    @_textareaInputView.value('')
+
+
   _submit: =>
     unless @formView.submit()
       return false
