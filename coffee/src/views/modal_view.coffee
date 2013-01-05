@@ -33,7 +33,7 @@ class athena.lib.ModalView extends athena.lib.View
     </div>
     <div class="modal-body"></div>
     <div class="modal-footer">
-      <a href="#" class="btn close dismiss-modal"><%= closeButtonName %></a>
+      <a href="#" class="btn dismiss-modal"><%= closeButtonName %></a>
     </div>
     '''
 

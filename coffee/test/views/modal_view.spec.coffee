@@ -94,7 +94,7 @@ describe 'athena.lib.ModalView', ->
       modalView = new ModalView
       $div.append modalView.render().el
 
-      expect(modalView.$('.modal-footer').find('.close').text()).toBe 'Close'
+      expect(modalView.$('.modal-footer').find('a').text()).toBe 'Close'
 
     it 'should display a close button with a configurable name', ->
       buttonName = 'Cancel'
@@ -102,7 +102,7 @@ describe 'athena.lib.ModalView', ->
       modalView = new ModalView closeButtonName: buttonName
       $div.append modalView.render().el
 
-      expect(modalView.$('.modal-footer').find('.close').text()).toBe buttonName
+      expect(modalView.$('.modal-footer').find('a').text()).toBe buttonName
 
 
   cdescribe 'ModalView: display management', ->
