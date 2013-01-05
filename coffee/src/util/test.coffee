@@ -104,7 +104,7 @@ test.describeView = (View, SuperView, options, tests) ->
 
   options ?= {}
 
-  describe "#{View.name} view tests", ->
+  describe "#{View.name}: view tests", ->
 
     it 'should be a function', ->
       expect(typeof View).toBe 'function'
