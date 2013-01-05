@@ -308,3 +308,32 @@ test.xdescribe = (description, fn, warning) ->
   console.log message
   describe message, ->
     it '', ->
+
+
+
+# conditionally disable test blocks in a way that displays warnings in tests
+test.conditionalDisablers = (disabled = true, warning) ->
+  warning ?= 'Conditionally Disabled'
+
+  # disabled it
+  dit = (description, fn) ->
+    test.xit description, fn, warning
+
+  # disabled describe
+  ddescribe = (description, fn) ->
+    test.xdescribe description, fn, warning
+
+  # warning it
+  wit = (description, fn) ->
+    console.log "#{warning}: #{description}"
+    it arguments...
+
+  # warning describe
+  wdescribe = (description, fn) ->
+    console.log "#{warning}: #{description}"
+    describe arguments...
+
+  if disabled
+    [dit, ddescribe]
+  else
+    [wit, wdescribe]
