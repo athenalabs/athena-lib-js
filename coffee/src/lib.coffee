@@ -19,13 +19,15 @@ goog.require 'athena.lib.PageView'
 goog.require 'athena.lib.NavigationView'
 goog.require 'athena.lib.NavListView'
 goog.require 'athena.lib.NavListTabView'
-goog.require 'athena.lib.ModalView'
 
 goog.require 'athena.lib.InputView'
 goog.require 'athena.lib.TextareaInputView'
 goog.require 'athena.lib.ToolbarInputView'
 goog.require 'athena.lib.FormComponentView'
 goog.require 'athena.lib.FormView'
+
+goog.require 'athena.lib.ModalView'
+goog.require 'athena.lib.FormModalView'
 
 goog.require 'athena.lib.TrackerInterface'
 goog.require 'athena.lib.MixpanelTracker'
