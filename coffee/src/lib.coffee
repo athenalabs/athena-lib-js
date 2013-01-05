@@ -22,6 +22,7 @@ goog.require 'athena.lib.NavListTabView'
 goog.require 'athena.lib.ModalView'
 
 goog.require 'athena.lib.InputView'
+goog.require 'athena.lib.TextareaInputView'
 goog.require 'athena.lib.ToolbarInputView'
 goog.require 'athena.lib.FormComponentView'
 goog.require 'athena.lib.FormView'
