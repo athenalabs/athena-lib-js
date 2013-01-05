@@ -26,3 +26,10 @@ class athena.lib.Model extends Backbone.Model
   toJSON: => return JSON.parse JSON.stringify @attributes
 
   toJSONString: => return JSON.stringify @toJSON()
+
+  # CORS settings for Backbone.sync
+  sync: (method, model, options) =>
+    options.xhrFields ?= {}
+    options.xhrFields.withCredentials = true
+    options.crossDomain = true
+    Backbone.sync method, model, options
