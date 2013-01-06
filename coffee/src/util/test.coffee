@@ -140,6 +140,13 @@ test.describeView = (View, SuperView, options, tests) ->
       view = new View(options)
       expect(view.render()).toBe view
 
+    it 'should be rendering after render (i.e. should call super)', ->
+      view = new View(options)
+      expect(view.rendering).toBe false
+
+      view.render()
+      expect(view.rendering).toBe true
+
     tests?()
 
 
