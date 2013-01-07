@@ -21,7 +21,7 @@ class athena.lib.TitleView extends athena.lib.View
 
   defaults: => _.extend super,
     # tagName for internal title
-    titleTag: 'h3'
+    titleTag: 'span'
 
 
   initialize: =>
