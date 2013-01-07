@@ -27,6 +27,8 @@ class athena.lib.App
 
   showPage: (page) =>
     @view.content page
+    unless @view.rendering
+      @view.render()
 
 
   start: =>
