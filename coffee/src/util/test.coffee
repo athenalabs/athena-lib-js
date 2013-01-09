@@ -132,9 +132,9 @@ test.describeView = (View, SuperView, options, tests) ->
       expect(typeof view.events()).toBe 'object'
 
     it 'should have an elAttributes function, that returns an object', ->
-      expect(typeof View.prototype.events).toBe 'function'
+      expect(typeof View.prototype.elAttributes).toBe 'function'
       view = new View options
-      expect(typeof view.events()).toBe 'object'
+      expect(typeof view.elAttributes()).toBe 'object'
 
     it 'should have render return @', ->
       view = new View(options)
