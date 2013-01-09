@@ -82,8 +82,8 @@ class athena.lib.FormComponentView extends athena.lib.View
   renderHelp: =>
     @$el.removeClass 'success'
     @$el.removeClass 'error'
-    @$('.help-inline').text @options.helpInline
-    @$('.help-block').text @options.helpBlock
+    @$('.help-inline').html @options.helpInline
+    @$('.help-block').html @options.helpBlock
     @
 
 
@@ -92,7 +92,7 @@ class athena.lib.FormComponentView extends athena.lib.View
   renderHelpMessage: (message, component, className) ->
     @renderHelp()
     @$el.addClass className if className
-    @$(".help-#{component}").text message
+    @$(".help-#{component}").html message
     @
 
 
