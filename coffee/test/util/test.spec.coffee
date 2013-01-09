@@ -60,6 +60,7 @@ describe 'athena.lib.util.test', ->
   describe 'test.describeView', ->
     class View extends athena.lib.View
       initialize: =>
+        super
         View.calledWithOptions = @options
 
     options = {a:1, b:2}
