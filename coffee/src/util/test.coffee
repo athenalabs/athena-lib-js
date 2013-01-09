@@ -136,6 +136,13 @@ test.describeView = (View, SuperView, options, tests) ->
       view = new View options
       expect(typeof view.elAttributes()).toBe 'object'
 
+    it 'should set @eventhub in initialize (i.e. should call super)', ->
+      eventhub = {}
+      opts = _.defaults {eventhub: eventhub}, options
+      view = new View opts
+
+      expect(view.eventhub).toBe eventhub
+
     it 'should have render return @', ->
       view = new View(options)
       expect(view.render()).toBe view
