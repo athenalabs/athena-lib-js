@@ -30,6 +30,7 @@ module.exports = (grunt) ->
       'node_modules/underscore/underscore.js'        # for utilities
       'node_modules/backbone/backbone.js'            # for mvc apps
       'node_modules/grunt-jasmine-spec-server/lib/bootstrap/js/bootstrap.min.js'
+      'node_modules/marked/lib/marked.js'            # for rendering docs
     ]
 
 
