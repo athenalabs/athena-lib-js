@@ -28,6 +28,8 @@ describe 'athena.lib.GridView', ->
 
   test.describeView GridView, athena.lib.View, options
 
+  test.describeDefaults GridView, {tileOptions: {}}, options
+
 
   describe 'GridView::renderTileForModel', ->
 
@@ -48,7 +50,7 @@ describe 'athena.lib.GridView', ->
       view.render()
       models.add newModel '21'
       tile = view.tileViews[20]
-      expect(tile.el.parentNode.parentNode).toBe view.el
+      expect(tile.el.parentNode).toBe view.el
       models.remove '21'
 
 

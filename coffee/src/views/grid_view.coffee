@@ -14,7 +14,9 @@ class athena.lib.GridView extends athena.lib.View
 
 
   defaults: => _.extend super,
-    tileVars: undefined
+
+    # options to be passed in to all constructed tiles
+    tileOptions: {}
 
 
   initialize: =>
@@ -40,14 +42,12 @@ class athena.lib.GridView extends athena.lib.View
 
 
   renderTileForModel: (model) =>
-    tile = new athena.lib.GridTileView
+    tile = new athena.lib.GridTileView _.extend {}, @options.tileOptions,
       eventhub: @eventhub
       model: model
-      tileVars: @options.tileVars
 
     @tileViews.push(tile)
-    li = $('<li class="span3">').append tile.render().el
-    @$el.append li
+    @$el.append tile.render().el
     @
 
 
