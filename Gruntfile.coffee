@@ -10,7 +10,7 @@ module.exports = (grunt) ->
 
     # javascript sources
     js_dir: 'js'
-    js_src: 'js/**/*.js'
+    js_src: 'js/src/**/*.js'
     js_specs: 'js/test/**/*.spec.js'
 
     # build directory
@@ -19,13 +19,18 @@ module.exports = (grunt) ->
     # minified target name
     minified: 'build/athena.lib.min.js'
 
+    # jasmine test page to render
+    test_page: 'static/tests.html'
+
     # libraries to load in the frontend
     frontend_libs: [
+      'lib/closure/library/closure/goog/base.js'     # for dependencies
+      'lib/mixpanel/mixpanel.js'                     # for analytics
       'node_modules/jquery-browser/lib/jquery.js'    # for dom manipulation
       'node_modules/underscore/underscore.js'        # for utilities
       'node_modules/backbone/backbone.js'            # for mvc apps
-      'lib/bootstrap/bootstrap.min.js'               # for style
-      'lib/closure/library/closure/goog/base.js'     # for dependencies
+      'node_modules/grunt-jasmine-spec-server/lib/bootstrap/js/bootstrap.min.js'
+      'node_modules/marked/lib/marked.js'            # for rendering docs
     ]
 
 
@@ -68,6 +73,8 @@ module.exports = (grunt) ->
     # specs to include.
     specs: paths.js_specs
 
+    # view to render
+    view: paths.test_page
 
 
   # Project configuration.
@@ -106,6 +113,7 @@ module.exports = (grunt) ->
            # warning_level: 'verbose',
            # jscomp_off: ['checkTypes', 'fileoverviewTags'],
            # summary_detail_level: 3,
+           # formatting: 'PRETTY_PRINT'
            js_output_file: paths.closure.compiled
            output_wrapper: '"(function(){%output%}).call(this);"'
 
@@ -120,11 +128,12 @@ module.exports = (grunt) ->
       lib: paths.jasmine.lib
       src: paths.jasmine.src
       specs: paths.jasmine.specs
+      view: paths.jasmine.view
 
     # task to watch sources for changes and recompile during development
     watch:
       files: paths.coffee_src
-      tasks: 'deps' # or 'test', or 'testserver' :)
+      tasks: 'sources' # or 'test', or 'testserver' :)
 
     # task to run shell commands
     exec:
@@ -153,7 +162,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-jasmine-spec-server'
 
   # Register tasks
-  grunt.registerTask 'compile', ['coffee', 'closureCompiler']
+  grunt.registerTask 'compile', ['coffee', 'exec:mkbuild', 'closureCompiler']
   grunt.registerTask 'sources', ['coffee', 'closureDepsWriter']
   grunt.registerTask 'test', ['sources', 'jasmine', 'clean:test']
   grunt.registerTask 'server', ['sources', 'jasmineSpecServer', 'watch']

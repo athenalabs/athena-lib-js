@@ -1,21 +1,23 @@
-goog.provide 'athena.lib.View.spec'
+goog.provide 'athena.lib.specs.View'
 
 goog.require 'athena.lib.util'
 goog.require 'athena.lib.View'
 
-lib = athena.lib
-util = athena.lib.util
-
 describe 'View', ->
-  it 'should be part of athena.lib', ->
-    expect(athena.lib.View).toBeDefined()
+  View = athena.lib.View
+  lib = athena.lib
+  util = athena.lib.util
 
-  View = lib.View;
+  it 'should be part of athena.lib', ->
+    expect(View).toBeDefined()
+
   it 'should derive from Backbone.View', ->
-    expect util.derives View, Backbone.View
+    expect(util.derives View, Backbone.View).toBe true
+
+  test.describeView View, Backbone.View
 
   it 'should have an eventhub option, with the Events interface', ->
-    expect(_.has View.prototype.defaults, 'eventhub').toBe true
+    expect(_.has View.prototype.defaults(), 'eventhub').toBe true
     view = new View()
     expect(view.eventhub).toBeDefined()
     expect(_.isFunction view.eventhub.on).toBe true
@@ -25,8 +27,8 @@ describe 'View', ->
     expect(view2.eventhub).toBe view
 
   it 'should support option `extraClasses`', ->
-    expect(View.prototype.defaults.extraClasses).toBeDefined()
-    expect(_.isArray View.prototype.defaults.extraClasses).toBe true
+    expect(View.prototype.defaults().extraClasses).toBeDefined()
+    expect(_.isArray View.prototype.defaults().extraClasses).toBe true
     view = new View extraClasses: ['class1', 'class2']
     expect(view.$el.hasClass 'class1').toBe true
     expect(view.$el.hasClass 'class2').toBe true
@@ -84,8 +86,8 @@ describe 'View', ->
     expect(renderSpy2.callCount).toBe 1
 
     # call destroy, check state,
-    view1.destroy();
-    view2.destroy();
+    view1.destroy()
+    view2.destroy()
     expect(view1.rendering).toBe false
     expect(view2.rendering).toBe false
 
@@ -94,3 +96,38 @@ describe 'View', ->
     view2.softRender()
     expect(renderSpy1.callCount).toBe 2
     expect(renderSpy2.callCount).toBe 1
+
+  it 'should have static method classNameExtend, which extends classNames', ->
+    class Firetruck extends View
+      className: @classNameExtend 'firetruck'
+    class RedFiretruck extends Firetruck
+      className: @classNameExtend 'red'
+    class BigRedFiretruck extends RedFiretruck
+      className: @classNameExtend 'big'
+
+    view = new View()
+    firetruck = new Firetruck()
+    redFiretruck = new RedFiretruck()
+    bigRedFiretruck = new BigRedFiretruck()
+
+    expect(view.className).toBe ''
+    expect(firetruck.className).toBe 'firetruck'
+    expect(redFiretruck.className).toBe 'firetruck red'
+    expect(bigRedFiretruck.className).toBe 'firetruck red big'
+
+
+  describe 'View::elAttributes', ->
+
+    it 'should be a function', ->
+      expect(typeof View::elAttributes).toBe 'function'
+
+    it 'should return an object', ->
+      expect(typeof new View().elAttributes()).toBe 'object'
+
+    it 'should set these on the element on render', ->
+      class TestView extends View
+        elAttributes: => {foo: 'bar', biz: 'baz'}
+      view = new TestView
+      view.render()
+      expect(view.$el.attr 'foo').toEqual 'bar'
+      expect(view.$el.attr 'biz').toEqual 'baz'

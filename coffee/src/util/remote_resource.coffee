@@ -12,7 +12,7 @@ class util.RemoteResourceInterface
   synced: -> true
   sync: (params) ->
     if params.success
-      params.success this.data()
+      params.success @data()
 
 
 class util.RemoteResource extends util.RemoteResourceInterface
@@ -51,7 +51,7 @@ class util.RemoteResource extends util.RemoteResourceInterface
   #   * jQuery ajax params: success/error callbacks, etc.
   sync: (syncParams) =>
     if syncParams.url
-      throw new Error('remoteResource.sync doesn\'t take url parameter.');
+      throw new Error 'remoteResource.sync doesn\'t take url parameter.'
 
     syncParams = _.extend {}, @params, syncParams
 

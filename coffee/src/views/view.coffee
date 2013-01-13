@@ -3,8 +3,15 @@ goog.provide 'athena.lib.View'
 # top level view for athena.lib
 class athena.lib.View extends Backbone.View
 
+  className: ''
+
+  # extend className with `className: @classNameExtend 'additional-class'`
+  @classNameExtend: (className) ->
+    superClass = @::className
+    if superClass then superClass + ' ' + className else className
+
   # Defaults for view options.
-  defaults:
+  defaults: =>
 
     # additional classes for the element
     extraClasses: []
@@ -12,27 +19,30 @@ class athena.lib.View extends Backbone.View
     # Event aggregator (like NSNotificationCenter)
     eventhub: undefined
 
-  initialize: ->
-    super()
+  # Events for view options.
+  events: => {}
+
+  # Attributes to set onto the element on render
+  elAttributes: => {}
+
+  initialize: =>
+    super
 
     # Extend options with defaults.
-    _.defaults @options, @defaults
+    _.defaults @options, @defaults()
 
     # If no eventhub is provided, this object is used as the eventhub.
-    this.eventhub = @options.eventhub || @
-
-    # Bind all functions within this object (including functions defined in
-    # derived classes) to `this`. This exempts you from having to bind
-    # functions to their respective objects throughout the codebase.
-    _.bindAll this
+    @eventhub = @options.eventhub || @
 
     # optionally add custom class names
     if @options.extraClasses
-      _.each @options.extraClasses, (name) =>
+      classes = @options.extraClasses
+      classes = [classes] if _.isString classes
+      _.each classes, (name) =>
         @$el.addClass name
 
   # Utility function for the complete removal of a View.
-  destroy: ->
+  destroy: =>
     @rendering = false
     @remove()
     @unbind()
@@ -42,14 +52,21 @@ class athena.lib.View extends Backbone.View
   rendering: false
 
   # Render by default calls delegateEvents
-  render: ->
-    super()
+  render: =>
+    super
 
     @rendering = true
     @delegateEvents()
 
+    # set all elAttributes directly on the element
+    _.each @elAttributes(), (val, key) =>
+      unless @$el.attr(key) == val
+        @$el.attr key, val
+
+    @
+
   # Renders only if the view is in the ``rendering`` state.
-  softRender: ->
+  softRender: =>
     if @rendering
       @render()
 
