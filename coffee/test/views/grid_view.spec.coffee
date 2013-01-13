@@ -108,6 +108,18 @@ describe 'athena.lib.GridView', ->
       expect(spy).toHaveBeenCalled()
 
 
+  it 'should fwd GridTileView events', ->
+    view = new GridView options
+    spy = new test.EventSpy view, 'all'
+    view.render()
+    tile = view.tileViews[0]
+    expect(spy.triggerCount).toBe 0
+    tile.trigger 'foo'
+    expect(spy.triggerCount).toBe 1
+    tile.trigger 'bar'
+    expect(spy.triggerCount).toBe 2
+
+
   it 'should look good', ->
     # create a div to safely append content to the page
     $safe = $('<div>').addClass('athena-lib-test').appendTo('body')
@@ -133,6 +145,21 @@ describe 'athena.lib.GridTileView', ->
     expect(GridTileView).toBeDefined()
 
   test.describeView GridTileView, athena.lib.View, options
+
+
+  it 'should trigger `GridTile:Click` on click', ->
+    view = new GridTileView options
+    view.render()
+    spy = new test.EventSpy view, 'GridTile:Click'
+    view.$('a').trigger 'click'
+    expect(spy.triggerCount).toBe 1
+
+  it 'should pass itself on `GridTile:Click`', ->
+    view = new GridTileView options
+    view.render()
+    spy = new test.EventSpy view, 'GridTile:Click'
+    view.$('a').trigger 'click'
+    expect(spy.arguments[0]).toEqual [view]
 
 
   it 'should look good', ->

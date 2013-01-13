@@ -46,6 +46,9 @@ class athena.lib.GridView extends athena.lib.View
       eventhub: @eventhub
       model: model
 
+    # fwd tile events
+    tile.on 'all', _.bind(@trigger, @)
+
     @tileViews.push(tile)
     @$el.append tile.render().el
     @
@@ -78,6 +81,14 @@ class athena.lib.GridTileView extends athena.lib.View
       <img src="<%= thumbnail %>" />
     </a>
     '''
+
+
+  events: => _.extend super,
+    'click a': (event) =>
+      @trigger 'GridTile:Click', @
+      unless @options.tileVars(@model).link
+        event.preventDefault()
+        return false
 
 
   defaults: => _.extend super,
