@@ -14,9 +14,7 @@ class athena.lib.GridView extends athena.lib.View
 
 
   defaults: => _.extend super,
-
-    # turns a collection model into a tile model
-    tileModel: (model) -> model
+    tileVars: undefined
 
 
   initialize: =>
@@ -45,6 +43,7 @@ class athena.lib.GridView extends athena.lib.View
     tile = new athena.lib.GridTileView
       eventhub: @eventhub
       model: model
+      tileVars: @options.tileVars
 
     @tileViews.push(tile)
     li = $('<li class="span3">').append tile.render().el
@@ -61,6 +60,7 @@ class athena.lib.GridView extends athena.lib.View
     tile.$el.parent().remove()
     tile.destroy()
     @
+
 
 
 # renders a single grid tile
@@ -80,10 +80,17 @@ class athena.lib.GridTileView extends athena.lib.View
     '''
 
 
+  defaults: => _.extend super,
+
+    # turns a collection model into a tile model
+    tileVars: (model) ->
+      {link: model.get?('link'), thumbnail: model.get?('thumbnail')}
+
+
   render: =>
     super
     @$el.empty()
-    @$el.html @template
-      link: @model.get?('link') or '#'
-      thumbnail: @model.get?('thumbnail') or ''
+    tileVars = @options.tileVars @model
+    _.defaults tileVars, {link: '#', thumbnail: ''}
+    @$el.html @template tileVars
     @
