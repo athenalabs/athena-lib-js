@@ -137,7 +137,7 @@ test.describeView = (View, SuperView, options, tests) ->
       expect(typeof view.elAttributes()).toBe 'object'
 
     it 'should set @eventhub in initialize (i.e. should call super)', ->
-      eventhub = {}
+      eventhub = new athena.lib.View
       opts = _.defaults {eventhub: eventhub}, options
       view = new View opts
 
