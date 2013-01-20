@@ -312,6 +312,7 @@ test.xit = (description, fn, warning) ->
   message = "#{warning}: #{description}"
   console.log message
   it message, ->
+xit = test.xit
 
 
 
@@ -322,6 +323,7 @@ test.xdescribe = (description, fn, warning) ->
   console.log message
   describe message, ->
     it '', ->
+xdescribe = test.xdescribe
 
 
 
