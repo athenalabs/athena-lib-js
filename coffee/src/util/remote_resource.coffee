@@ -49,7 +49,7 @@ class util.RemoteResource extends util.RemoteResourceInterface
   # * syncParams:
   #   * force (boolean): forces remote fetch even if local value exists
   #   * jQuery ajax params: success/error callbacks, etc.
-  sync: (syncParams) =>
+  sync: (syncParams = {}) =>
     if syncParams.url
       throw new Error 'remoteResource.sync doesn\'t take url parameter.'
 
