@@ -11,7 +11,7 @@ describe 'LoadingView', ->
 
 
   test.describeDefaults LoadingView,
-    img: '//athena.ai/img/gray-a-logo.png'
+    img: 'http://athena.ai/img/gray-a-logo.png'
 
 
   it 'should be part of athena.lib', ->
