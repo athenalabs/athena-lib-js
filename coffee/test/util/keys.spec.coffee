@@ -18,6 +18,7 @@ describe 'athena.lib.util.keys', ->
     expect(keys.PAUSE).toBe 19
     expect(keys.CAPS_LOCK).toBe 20
     expect(keys.ESCAPE).toBe 27
+    expect(keys.SPACEBAR).toBe 32
     expect(keys.PAGE_UP).toBe 33
     expect(keys.PAGE_DOWN).toBe 34
     expect(keys.END).toBe 35
