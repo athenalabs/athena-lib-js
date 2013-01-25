@@ -84,6 +84,10 @@ describe 'View', ->
       expect(view1.render.callCount).toBe 2
       expect(view2.render.callCount).toBe 0
 
+    it 'should return @, despite rendering state', ->
+      expect(view1.softRender()).toBe view1
+      expect(view2.softRender()).toBe view2
+
     it 'should work if we manipulate rendering state', ->
       view1.rendering = false
       view2.rendering = true

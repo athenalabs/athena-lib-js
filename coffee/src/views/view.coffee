@@ -69,6 +69,7 @@ class athena.lib.View extends Backbone.View
   softRender: =>
     if @rendering
       @render()
+    @
 
   # Overridable function meant to mirror Backbone.View's initialize()
   uninitialize: ->
