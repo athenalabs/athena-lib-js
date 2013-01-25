@@ -40,62 +40,72 @@ describe 'View', ->
     view.render()
     expect(view.rendering).toBe true
 
-  it 'should support softRender', ->
+  describe 'View::softRender', ->
     view1 = new View()
     view2 = new View()
 
     # spy on callbacks
-    renderSpy1 = spyOn(view1, 'render').andCallThrough()
-    renderSpy2 = spyOn(view2, 'render').andCallThrough()
+    beforeEach ->
+      spyOn(view1, 'render').andCallThrough()
+      spyOn(view2, 'render').andCallThrough()
 
-    # ensure rendering is false
-    expect(view1.rendering).toBe false
-    expect(view2.rendering).toBe false
+    it 'should not call render if not rendering', ->
+      expect(view1.rendering).toBe false
+      expect(view2.rendering).toBe false
 
-    # try soft rendering, should not call render.
-    view1.softRender()
-    view2.softRender()
-    expect(renderSpy1.callCount).toBe 0
-    expect(renderSpy2.callCount).toBe 0
+      # try soft rendering, should not call render.
+      expect(view1.render.callCount).toBe 0
+      expect(view2.render.callCount).toBe 0
 
+    it 'should update rendering on render', ->
+      view1.render()
+      expect(view1.rendering).toBe true
+      expect(view2.rendering).toBe false
+      expect(view1.render.callCount).toBe 1
+      expect(view2.render.callCount).toBe 0
 
-    # call render, and check state changes
-    view1.render()
-    expect(view1.rendering).toBe true
-    expect(view2.rendering).toBe false
-    expect(renderSpy1.callCount).toBe 1
-    expect(renderSpy2.callCount).toBe 0
+    it 'should call render if rendering', ->
+      view1.softRender()
+      view2.softRender()
+      expect(view1.rendering).toBe true
+      expect(view2.rendering).toBe false
+      expect(view1.render.callCount).toBe 1
+      expect(view2.render.callCount).toBe 0
 
+    it 'should call render if rendering (repeatedly)', ->
+      view1.softRender()
+      view2.softRender()
+      expect(view1.rendering).toBe true
+      expect(view2.rendering).toBe false
+      expect(view1.render.callCount).toBe 1
+      expect(view2.render.callCount).toBe 0
+      view1.softRender()
+      view2.softRender()
+      expect(view1.render.callCount).toBe 2
+      expect(view2.render.callCount).toBe 0
 
-    # call softRender, check 1 rendered and 2 did not.
-    view1.softRender()
-    view2.softRender()
-    expect(view1.rendering).toBe true
-    expect(view2.rendering).toBe false
-    expect(renderSpy1.callCount).toBe 2
-    expect(renderSpy2.callCount).toBe 0
+    it 'should work if we manipulate rendering state', ->
+      view1.rendering = false
+      view2.rendering = true
+      view1.softRender()
+      view2.softRender()
+      expect(view1.rendering).toBe false
+      expect(view2.rendering).toBe true
+      expect(view1.render.callCount).toBe 0
+      expect(view2.render.callCount).toBe 1
 
-    # change rendering state, softRender, check 2 rendered and 1 did not.
-    view1.rendering = false
-    view2.rendering = true
-    view1.softRender()
-    view2.softRender()
-    expect(view1.rendering).toBe false
-    expect(view2.rendering).toBe true
-    expect(renderSpy1.callCount).toBe 2
-    expect(renderSpy2.callCount).toBe 1
+    it 'should not be rendering after destroy', ->
+      view1.destroy()
+      view2.destroy()
+      expect(view1.rendering).toBe false
+      expect(view2.rendering).toBe false
 
-    # call destroy, check state,
-    view1.destroy()
-    view2.destroy()
-    expect(view1.rendering).toBe false
-    expect(view2.rendering).toBe false
+    it 'should not render after destroy', ->
+      view1.softRender()
+      view2.softRender()
+      expect(view1.render.callCount).toBe 0
+      expect(view2.render.callCount).toBe 0
 
-    # softRender should not call either.
-    view1.softRender()
-    view2.softRender()
-    expect(renderSpy1.callCount).toBe 2
-    expect(renderSpy2.callCount).toBe 1
 
   it 'should have static method classNameExtend, which extends classNames', ->
     class Firetruck extends View
