@@ -15,7 +15,16 @@ class athena.lib.ToolbarView extends athena.lib.View
 
 
   button: (btnid) =>
-    _.find @buttons, (btn) => btn.id is btnid
+    foundBtns = []
+    searchButtons = (buttons, btnid) =>
+      _.each buttons, (btn) =>
+        if _.isArray btn
+          searchButtons btn, btnid
+        else if btn.id is btnid
+          foundBtns.push btn
+
+    searchButtons @buttons, btnid
+    foundBtns.shift()
 
 
   render: =>

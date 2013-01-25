@@ -135,6 +135,11 @@ describe 'ToolbarView', ->
       expect(view.button 'Bar').toBe undefined
       expect(view.button 'baz').toBe btns[2]
 
+      view = new ToolbarView buttons: [btns]
+      expect(view.button 'f').toBe btns[0]
+      expect(view.button 'Bar').toBe undefined
+      expect(view.button 'baz').toBe btns[2]
+
   it 'should look good', ->
     # create a div to safely append content to the page
     $safe = $('<div>').addClass('athena-lib-test').appendTo('body')
