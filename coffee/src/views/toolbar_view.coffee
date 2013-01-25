@@ -14,6 +14,10 @@ class athena.lib.ToolbarView extends athena.lib.View
     @buttons = @options.buttons || []
 
 
+  button: (btnid) =>
+    _.find @buttons, (btn) => btn.id is btnid
+
+
   render: =>
     super
     @$el.empty()
