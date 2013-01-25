@@ -53,6 +53,7 @@ class athena.lib.ToolbarView extends athena.lib.View
     btn.addClass 'btn'
 
     btn.append($("<i class='#{button.icon}'>")) if button.icon
+    btn.append(' ') if button.text and button.icon
     btn.append(button.text) if button.text
 
     btn.addClass(button.className) if button.className
@@ -78,6 +79,7 @@ class athena.lib.ToolbarView extends athena.lib.View
     # generate the toggle element
     toggle = $('<button class="btn dropdown-toggle" data-toggle="dropdown">')
     toggle.append($("<i class='#{button.icon}'>")) if button.icon
+    toggle.append(' ') if button.text and button.icon
     toggle.text(button.text) if button.text
     toggle.append " <i class='caret'>"
     btn.append toggle
