@@ -18,7 +18,7 @@ class athena.lib.FormModalView extends athena.lib.ModalView
 
 
   events: => _.extend super,
-    'click .submit': @_onClickSubmit
+    'click .submit': => @_submit()
 
 
   initialize: =>
@@ -74,10 +74,6 @@ class athena.lib.FormModalView extends athena.lib.ModalView
     values = @formView.values()
     @options.onSubmit?(values, @)
     @trigger 'FormModalView:Submit', values, @
-
-
-  _onClickSubmit: =>
-    @_submit()
 
 
   # do nothing on global enter
