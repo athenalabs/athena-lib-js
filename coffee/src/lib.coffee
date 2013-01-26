@@ -37,6 +37,7 @@ goog.require 'athena.lib.ModalView'
 goog.require 'athena.lib.FormModalView'
 
 goog.require 'athena.lib.TrackerInterface'
+goog.require 'athena.lib.TrackerManager'
 goog.require 'athena.lib.MixpanelTracker'
 
 (exports ? @).athena = athena
