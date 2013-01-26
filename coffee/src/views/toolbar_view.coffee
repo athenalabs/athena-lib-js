@@ -9,6 +9,27 @@ class athena.lib.ToolbarView extends athena.lib.View
   className: @classNameExtend 'toolbar-view'
 
 
+  events: => _.extend super,
+    'click button:not(.dropdown-toggle)': (event) =>
+      if event.target.id
+        @trigger "Toolbar:Click:#{event.target.id}", @, event
+      @trigger "Toolbar:Click", @, event
+
+    'click .dropdown-toggle': (event) =>
+      dropdown_id = $(event.target).closest('.btn-group').attr('id')
+      if dropdown_id
+        @trigger "Toolbar:Click:#{dropdown_id}", @, event
+      @trigger "Toolbar:Click", @, event
+
+    'click .dropdown-link': (event) =>
+      dropdown_id = $(event.target).closest('.btn-group').attr('id')
+      if event.target.id and dropdown_id
+        @trigger "Toolbar:Click:#{dropdown_id}:#{event.target.id}", @, event
+      if event.target.id
+        @trigger "Toolbar:Click:#{event.target.id}", @, event
+      @trigger "Toolbar:Click", @, event
+
+
   initialize: =>
     super
     @buttons = @options.buttons || []
@@ -100,7 +121,8 @@ class athena.lib.ToolbarView extends athena.lib.View
     # generate all the dropdown list elements
     list = $('<ul class="dropdown-menu">')
     _.each button.dropdown, (button) =>
-      item = $('<a href="#">')
+      item = $('<a href="#" class="dropdown-link">')
+      item.attr('id', button.id) if button.id
       item.append($("<i class='#{button.leftIcon}'>")) if button.leftIcon
       item.text(button.text) if button.text
       item.append($("<i class='#{button.rightIcon}'>")) if button.rightIcon

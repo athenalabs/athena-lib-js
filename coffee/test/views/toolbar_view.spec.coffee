@@ -114,13 +114,14 @@ describe 'ToolbarView', ->
       expect(view.$('.btn-group').children().length).toBe 2
 
     it 'should render and append dropdown buttons', ->
-      btn = text: 'Dropdown', dropdown: [{text: 'Foo'}, {text: 'Bar'}]
+      btn = text: 'Dropdown', dropdown: [{text: 'Foo'}, {text: 'Bar', id: 'b'}]
       view = new ToolbarView(buttons: [btn])
       expect(view.buttons).toEqual [btn]
 
       view.render()
       expect(view.$('button').text().replace(/\s+/g, '')).toBe 'Dropdown'
       expect(view.$('a').text().replace(/\s+/g, '')).toBe 'FooBar'
+      expect(view.$('a#b').length).toBe 1
       expect(view.$('.dropdown-menu').children().length).toBe 2
 
 
@@ -140,6 +141,50 @@ describe 'ToolbarView', ->
       expect(view.button 'Bar').toBe undefined
       expect(view.button 'baz').toBe btns[2]
 
+
+  describe 'ToolbarView events', ->
+
+    it 'should trigger events on btn clicks', ->
+      btns = [{text: 'Foo', id: 'foo'}, {text: 'Bar', id: 'bar'}]
+      view = new ToolbarView buttons: btns
+      spy1 = new test.EventSpy view, 'Toolbar:Click'
+      spy2 = new test.EventSpy view, 'Toolbar:Click:foo'
+      spy3 = new test.EventSpy view, 'Toolbar:Click:bar'
+      view.render()
+
+      view.$('#foo').trigger 'click'
+      expect(spy1.triggerCount).toBe 1
+      expect(spy2.triggerCount).toBe 1
+
+      view.$('#bar').trigger 'click'
+      expect(spy1.triggerCount).toBe 2
+      expect(spy3.triggerCount).toBe 1
+
+      view.$('#foo').trigger 'click'
+      expect(spy1.triggerCount).toBe 3
+      expect(spy2.triggerCount).toBe 2
+
+
+    it 'should trigger events on dropdown link clicks', ->
+      btns = [{text: 'Foo', id:'foo', dropdown: [{text: 'Bar', id: 'bar'}]}]
+      view = new ToolbarView buttons: btns
+      spy1 = new test.EventSpy view, 'Toolbar:Click'
+      spy2 = new test.EventSpy view, 'Toolbar:Click:foo'
+      spy3 = new test.EventSpy view, 'Toolbar:Click:bar'
+      spy4 = new test.EventSpy view, 'Toolbar:Click:foo:bar'
+      view.render()
+
+      view.$('#foo .dropdown-toggle').trigger 'click'
+      expect(spy1.triggerCount).toBe 1
+      expect(spy2.triggerCount).toBe 1
+
+      view.$('#bar').trigger 'click'
+      expect(spy1.triggerCount).toBe 2
+      expect(spy3.triggerCount).toBe 1
+      expect(spy4.triggerCount).toBe 1
+
+
+
   it 'should look good', ->
     # create a div to safely append content to the page
     $safe = $('<div>').addClass('athena-lib-test').appendTo('body')
@@ -150,7 +195,9 @@ describe 'ToolbarView', ->
       {text: 'Delete', icon: 'icon-remove'},
       {icon: 'icon-remove', tooltip: {title: 'bye bye', delay: {show: 1000}}},
       [['Foo', 'Bar']],
-      {text: 'Foo', dropdown: [{text: 'Bar'}, {text: 'Baz'}]}
+      {text: 'Foo', id: 'foo', dropdown: [
+        {text: 'Bar', id:'b'}, {text: 'Baz', id:'c'}
+      ]}
     ]
     view = new ToolbarView buttons: btns
     view.render()
