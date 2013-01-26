@@ -76,7 +76,7 @@ class athena.lib.ModalView extends athena.lib.View
 
 
   _toolbarButtons: =>
-    [{text: @options.closeButtonName, className: 'dismiss-modal'}]
+    [{text: @options.closeButtonName, id:'close', className: 'dismiss-modal'}]
 
 
   show: =>
