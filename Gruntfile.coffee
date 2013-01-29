@@ -27,6 +27,7 @@ module.exports = (grunt) ->
       'lib/closure/library/closure/goog/base.js'     # for dependencies
       'lib/mixpanel/mixpanel.js'                     # for analytics
       'node_modules/jquery-browser/lib/jquery.js'    # for dom manipulation
+      'lib/masonry/jquery.masonry.min.js'            # for grid tiling
       'node_modules/underscore/underscore.js'        # for utilities
       'node_modules/backbone/backbone.js'            # for mvc apps
       'node_modules/grunt-jasmine-spec-server/lib/bootstrap/js/bootstrap.min.js'
