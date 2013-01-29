@@ -78,8 +78,16 @@ class athena.lib.GridTileView extends athena.lib.View
 
   template: _.template '''
     <a href="<%= link %>">
-      <img src="<%= thumbnail %>" />
+      <% if (icon) { %>
+        <i class="<%= icon %>"></i>
+      <% } %>
+      <% if (thumbnail) { %>
+        <img src="<%= thumbnail %>" />
+      <% } %>
     </a>
+    <% if (text) { %>
+      <div class="text"><%= text %></div>
+    <% } %>
     '''
 
 
@@ -95,13 +103,17 @@ class athena.lib.GridTileView extends athena.lib.View
 
     # turns a collection model into a tile model
     tileVars: (model) ->
-      {link: model.get?('link'), thumbnail: model.get?('thumbnail')}
+      link: model.get?('link') or '#'
+      text: model.get?('text') or ''
+      icon: model.get?('icon') or ''
+      thumbnail: model.get?('thumbnail') or ''
 
 
   render: =>
     super
     @$el.empty()
     tileVars = @options.tileVars @model
-    _.defaults tileVars, {link: '#', thumbnail: ''}
+    _.defaults tileVars,
+      {link: '#', thumbnail: '', icon: undefined, text: undefined}
     @$el.html @template tileVars
     @

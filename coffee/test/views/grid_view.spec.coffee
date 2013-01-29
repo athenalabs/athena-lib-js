@@ -138,28 +138,14 @@ describe 'athena.lib.GridTileView', ->
   options =
     model: new Backbone.Model
       link: '/foo'
-      thumbnail: 'bar.png'
+      icon: 'icon-play'
+      text: 'foo'
 
 
   it 'should be part of acorn.web', ->
     expect(GridTileView).toBeDefined()
 
   test.describeView GridTileView, athena.lib.View, options
-
-
-  it 'should trigger `GridTile:Click` on click', ->
-    view = new GridTileView options
-    view.render()
-    spy = new test.EventSpy view, 'GridTile:Click'
-    view.$('a').trigger 'click'
-    expect(spy.triggerCount).toBe 1
-
-  it 'should pass itself on `GridTile:Click`', ->
-    view = new GridTileView options
-    view.render()
-    spy = new test.EventSpy view, 'GridTile:Click'
-    view.$('a').trigger 'click'
-    expect(spy.arguments[0]).toEqual [view]
 
 
   it 'should look good', ->
