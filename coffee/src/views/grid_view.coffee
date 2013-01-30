@@ -94,7 +94,8 @@ class athena.lib.GridTileView extends athena.lib.View
   events: => _.extend super,
     'click a': (event) =>
       @trigger 'GridTile:Click', @
-      unless @options.tileVars(@model).link
+      link = @options.tileVars(@model).link
+      unless link and link isnt '#'
         event.preventDefault()
         return false
 
