@@ -18,6 +18,10 @@ class athena.lib.GridView extends athena.lib.View
     # options to be passed in to all constructed tiles
     tileOptions: {}
 
+    masonry: true           # pass false to disable masonry
+    columnWidth: undefined  # defaults to size of first element
+    gutterWidth: 10         # space between columns
+
 
   initialize: =>
     super
@@ -32,12 +36,18 @@ class athena.lib.GridView extends athena.lib.View
 
     @listenTo @collection, 'reset', => @softRender()
 
+    @listenTo @collection, 'all', => @refreshMasonry()
+
 
   render: =>
     super
     _.each @tileViews, (tile) => tile.destroy()
     @$el.empty()
     @collection.each @renderTileForModel
+
+    # Try masonizing after call stack clears
+    setTimeout @refreshMasonry, 0
+
     @
 
 
@@ -63,6 +73,33 @@ class athena.lib.GridView extends athena.lib.View
     tile.$el.parent().remove()
     tile.destroy()
     @
+
+
+  refreshMasonry: =>
+    unless @options.masonry
+      return
+
+    unless util.elementInDom @el
+      console.log 'WARNING: attempt to masonize mediaListView when not in DOM'
+      return
+
+    container = @$el
+    itemSelector = 'li.grid-tile-view.thumbnail'
+
+    # if previously masonized, reload masonry when call stack clears
+    if @_masonized
+      setTimeout (=> container.masonry 'reload'), 0
+
+    # else initialize masonry
+    else
+      @_masonized = true
+      container.masonry
+        itemSelector: itemSelector
+        columnWidth: @options.columnWidth
+        gutterWidth: @options.gutterWidth
+
+    # reload masonry on images loaded
+    container.imagesLoaded => container.masonry 'reload'
 
 
 
