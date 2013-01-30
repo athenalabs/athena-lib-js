@@ -9,9 +9,14 @@ describe 'athena.lib.GridView', ->
   test = athena.lib.util.test
   GridView = athena.lib.GridView
 
+  thumbnails = [
+    'http://bit.ly/VuWzlF'
+    'http://bit.ly/Yh3Rqp'
+    'http://bit.ly/VmKnhC'
+  ]
 
   newModel = (id) -> new Backbone.Model
-    thumbnail: '/goo.png'
+    thumbnail: thumbnails[id % thumbnails.length]
     link: '/foo'
     id: "#{id}"
 
@@ -21,6 +26,7 @@ describe 'athena.lib.GridView', ->
 
   options =
     collection: models
+    masonry: false # avoid masonry in most tests to save time
 
 
   it 'should be part of athena.lib', ->
@@ -124,9 +130,14 @@ describe 'athena.lib.GridView', ->
     # create a div to safely append content to the page
     $safe = $('<div>').addClass('athena-lib-test').appendTo('body')
 
-    # add a AcornOptionsView into the DOM to see how it looks.
-    view = new GridView options
+    # add a AcornOptionsView into the DOM to see how it looks, using masonry.
+    _options = _.extend {}, options, masonry: true
+    view = new GridView _options
     view.render()
+    view.$('.thumbnail')
+      .css('margin-left', 0)
+      .css('margin-bottom', 10)
+      .css('width', 225)
     $safe.append view.el
 
 

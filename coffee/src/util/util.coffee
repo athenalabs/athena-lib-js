@@ -18,3 +18,15 @@ util.isOrDerives = (child, parent) ->
 
 util.isStrictObject = (obj) ->
   obj?.toString() == '[object Object]'
+
+
+# Check if an element or set of elements is in the DOM
+util.elementInDom = (element) ->
+  if element instanceof $
+    return _.all element, util.elementInDom
+
+  while element = element?.parentNode
+    if element == document
+      return true
+
+  return false
