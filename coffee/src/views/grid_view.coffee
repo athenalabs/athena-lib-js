@@ -18,7 +18,7 @@ class athena.lib.GridView extends athena.lib.View
     # options to be passed in to all constructed tiles
     tileOptions: {}
 
-    masonry: true           # pass false to disable masonry
+    masonry: false          # pass true to turn on masonry
     columnWidth: undefined  # defaults to size of first element
     gutterWidth: 10         # space between columns
 

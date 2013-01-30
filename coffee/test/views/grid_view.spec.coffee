@@ -26,7 +26,6 @@ describe 'athena.lib.GridView', ->
 
   options =
     collection: models
-    masonry: false # avoid masonry in most tests to save time
 
 
   it 'should be part of athena.lib', ->
