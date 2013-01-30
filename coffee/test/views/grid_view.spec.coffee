@@ -9,9 +9,14 @@ describe 'athena.lib.GridView', ->
   test = athena.lib.util.test
   GridView = athena.lib.GridView
 
+  thumbnails = [
+    'http://bit.ly/VuWzlF'
+    'http://bit.ly/Yh3Rqp'
+    'http://bit.ly/VmKnhC'
+  ]
 
   newModel = (id) -> new Backbone.Model
-    thumbnail: '/goo.png'
+    thumbnail: thumbnails[id % thumbnails.length]
     link: '/foo'
     id: "#{id}"
 
