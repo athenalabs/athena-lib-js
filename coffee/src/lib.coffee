@@ -32,6 +32,7 @@ goog.require 'athena.lib.DocView'
 goog.require 'athena.lib.GistView'
 
 goog.require 'athena.lib.LoadingView'
+goog.require 'athena.lib.PopoverView'
 
 goog.require 'athena.lib.ModalView'
 goog.require 'athena.lib.FormModalView'
