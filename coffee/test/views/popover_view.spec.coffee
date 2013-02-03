@@ -15,15 +15,6 @@ describe 'PopoverView', ->
     expect(PopoverView).toBeDefined()
 
 
-  it 'render should defer call initializePopover ', ->
-    view = new PopoverView popover: $('body')
-    spyOn(view, 'initializePopover').andCallThrough()
-    view.render()
-    expect(view.initializePopover).not.toHaveBeenCalled()
-    waitsFor (-> view.$popoverEl), 'popover to init', 100
-    runs -> expect(view.initializePopover).toHaveBeenCalled()
-
-
   it 'should look good', ->
     # create a div to safely append content to the page
 
