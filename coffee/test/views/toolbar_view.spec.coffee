@@ -184,6 +184,50 @@ describe 'ToolbarView', ->
       expect(spy4.triggerCount).toBe 1
 
 
+    it 'should trigger events on btn.i clicks', ->
+      btns = [
+        {text: 'Foo', id: 'foo', icon: 'icon-ok'},
+        {text: 'Bar', id: 'bar', icon: 'icon-cancel'}
+      ]
+      view = new ToolbarView buttons: btns
+      spy1 = new test.EventSpy view, 'Toolbar:Click'
+      spy2 = new test.EventSpy view, 'Toolbar:Click:foo'
+      spy3 = new test.EventSpy view, 'Toolbar:Click:bar'
+      view.render()
+
+      view.$('#foo > i').trigger 'click'
+      expect(spy1.triggerCount).toBe 1
+      expect(spy2.triggerCount).toBe 1
+
+      view.$('#bar > i').trigger 'click'
+      expect(spy1.triggerCount).toBe 2
+      expect(spy3.triggerCount).toBe 1
+
+      view.$('#foo > i').trigger 'click'
+      expect(spy1.triggerCount).toBe 3
+      expect(spy2.triggerCount).toBe 2
+
+
+    it 'should trigger events on dropdown link.i clicks', ->
+      drop = [{text: 'Bar', id: 'bar', leftIcon: 'icon-cancel'}]
+      btns = [{text: 'Foo', id:'foo', icon: 'icon-ok', dropdown: drop}]
+      view = new ToolbarView buttons: btns
+      spy1 = new test.EventSpy view, 'Toolbar:Click'
+      spy2 = new test.EventSpy view, 'Toolbar:Click:foo'
+      spy3 = new test.EventSpy view, 'Toolbar:Click:bar'
+      spy4 = new test.EventSpy view, 'Toolbar:Click:foo:bar'
+      view.render()
+
+      view.$('#foo .dropdown-toggle > i.icon-ok').trigger 'click'
+      expect(spy1.triggerCount).toBe 1
+      expect(spy2.triggerCount).toBe 1
+
+      view.$('#bar > i.icon-cancel').trigger 'click'
+      expect(spy1.triggerCount).toBe 2
+      expect(spy3.triggerCount).toBe 1
+      expect(spy4.triggerCount).toBe 1
+
+
 
   it 'should look good', ->
     # create a div to safely append content to the page

@@ -11,22 +11,31 @@ class athena.lib.ToolbarView extends athena.lib.View
 
   events: => _.extend super,
     'click button:not(.dropdown-toggle)': (event) =>
-      if event.target.id
-        @trigger "Toolbar:Click:#{event.target.id}", @, event
+      target = event.target
+      target = target.parentNode if target.tagName is 'I'
+
+      if target.id
+        @trigger "Toolbar:Click:#{target.id}", @, event
       @trigger "Toolbar:Click", @, event
 
     'click .dropdown-toggle': (event) =>
-      dropdown_id = $(event.target).closest('.btn-group').attr('id')
+      target = event.target
+      target = target.parentNode if target.tagName is 'I'
+
+      dropdown_id = $(target).closest('.btn-group').attr('id')
       if dropdown_id
         @trigger "Toolbar:Click:#{dropdown_id}", @, event
       @trigger "Toolbar:Click", @, event
 
     'click .dropdown-link': (event) =>
-      dropdown_id = $(event.target).closest('.btn-group').attr('id')
-      if event.target.id and dropdown_id
-        @trigger "Toolbar:Click:#{dropdown_id}:#{event.target.id}", @, event
-      if event.target.id
-        @trigger "Toolbar:Click:#{event.target.id}", @, event
+      target = event.target
+      target = target.parentNode if target.tagName is 'I'
+
+      dropdown_id = $(target).closest('.btn-group').attr('id')
+      if target.id and dropdown_id
+        @trigger "Toolbar:Click:#{dropdown_id}:#{target.id}", @, event
+      if target.id
+        @trigger "Toolbar:Click:#{target.id}", @, event
       @trigger "Toolbar:Click", @, event
 
 
@@ -114,7 +123,7 @@ class athena.lib.ToolbarView extends athena.lib.View
     toggle = $('<button class="btn dropdown-toggle" data-toggle="dropdown">')
     toggle.append($("<i class='#{button.icon}'>")) if button.icon
     toggle.append(' ') if button.text and button.icon
-    toggle.text(button.text) if button.text
+    toggle.append(button.text) if button.text
     toggle.append " <i class='caret'>"
     btn.append toggle
 
@@ -124,7 +133,7 @@ class athena.lib.ToolbarView extends athena.lib.View
       item = $('<a href="#" class="dropdown-link">')
       item.attr('id', button.id) if button.id
       item.append($("<i class='#{button.leftIcon}'>")) if button.leftIcon
-      item.text(button.text) if button.text
+      item.append(button.text) if button.text
       item.append($("<i class='#{button.rightIcon}'>")) if button.rightIcon
       list.append $('<li>').append item
     btn.append list
