@@ -52,5 +52,3 @@ class athena.lib.Router extends Backbone.Router
 
       # navigate to the route described by path
       router.navigate @pathname, trigger: true
-
-      return false
