@@ -27,3 +27,9 @@ describe 'athena.lib.MixpanelTracker', ->
     track_fn = ->
       tracker.track('event')
     expect(track_fn).not.toThrow();
+
+  it 'should allow identifying', ->
+    tracker = new MixpanelTracker(token)
+    track_fn = ->
+      tracker.identify('walrus')
+    expect(track_fn).not.toThrow()
