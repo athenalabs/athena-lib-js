@@ -99,3 +99,46 @@ describe 'athena.lib.Router', ->
       spy = spyOn(router, 'go')
       eventhub.trigger 'Go', '/foo'
       expect(spy).toHaveBeenCalledWith '/foo'
+
+
+  describe 'Router::routeInternalLinks', ->
+
+    it 'should intercept and call navigate on links clicked', ->
+      router = new Router
+      link = $('<a>').attr('href', '/foo').appendTo $('body')
+      spy = spyOn(router, 'navigate')
+      router.routeInternalLinks()
+      link.trigger('click')
+      expect(spy).toHaveBeenCalled()
+
+    it 'should not intercept links clicked with SHIFT', ->
+      router = new Router
+      link = $('<a>').attr('href', '/foo').appendTo $('body')
+      spy = spyOn(router, 'navigate')
+      router.routeInternalLinks()
+      link.trigger $.Event 'click', shiftKey: true
+      expect(spy).not.toHaveBeenCalled()
+
+    it 'should not intercept links clicked with CTRL', ->
+      router = new Router
+      link = $('<a>').attr('href', '/foo').appendTo $('body')
+      spy = spyOn(router, 'navigate')
+      router.routeInternalLinks()
+      link.trigger $.Event 'click', ctrlKey: true
+      expect(spy).not.toHaveBeenCalled()
+
+    it 'should not intercept links clicked with ALT', ->
+      router = new Router
+      link = $('<a>').attr('href', '/foo').appendTo $('body')
+      spy = spyOn(router, 'navigate')
+      router.routeInternalLinks()
+      link.trigger $.Event 'click', altKey: true
+      expect(spy).not.toHaveBeenCalled()
+
+    it 'should not intercept links clicked with META', ->
+      router = new Router
+      link = $('<a>').attr('href', '/foo').appendTo $('body')
+      spy = spyOn(router, 'navigate')
+      router.routeInternalLinks()
+      link.trigger $.Event 'click', metaKey: true
+      expect(spy).not.toHaveBeenCalled()

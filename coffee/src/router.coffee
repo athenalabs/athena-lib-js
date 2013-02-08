@@ -39,6 +39,10 @@ class athena.lib.Router extends Backbone.Router
 
     $(document).on 'click', 'a:not([data-bypass])', (event) ->
 
+      # do not alter ALT, SHIFT, CTRL or META clicks.
+      if event.altKey or event.shiftKey or event.ctrlKey or event.metaKey
+        return event
+
       # target must be an anchor tag
       unless @nodeName.toLowerCase() is 'a'
         return event
