@@ -20,10 +20,16 @@ describe 'athena.lib.MixpanelTracker', ->
     construct_fn = ->
       new MixpanelTracker(token)
 
-    expect(construct_fn).not.toThrow();
+    expect(construct_fn).not.toThrow()
 
   it 'should allow tracking', ->
     tracker = new MixpanelTracker(token)
     track_fn = ->
       tracker.track('event')
-    expect(track_fn).not.toThrow();
+    expect(track_fn).not.toThrow()
+
+  it 'should allow identifying', ->
+    tracker = new MixpanelTracker(token)
+    track_fn = ->
+      tracker.identify('walrus')
+    expect(track_fn).not.toThrow()
