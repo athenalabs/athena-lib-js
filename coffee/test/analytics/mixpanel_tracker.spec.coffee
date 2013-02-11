@@ -3,10 +3,6 @@ goog.provide 'athena.lib.specs.MixpanelTracker'
 goog.require 'athena.lib.MixpanelTracker'
 
 
-describe 'window.mixpanel library', ->
-  it 'should exist', ->
-    expect(window.mixpanel).toBeDefined()
-
 describe 'athena.lib.MixpanelTracker', ->
   MixpanelTracker = athena.lib.MixpanelTracker
 
