@@ -11,6 +11,7 @@ class athena.lib.MixpanelTracker extends athena.lib.TrackerInterface
   identify: (userid) =>
     mixpanel.identify userid
     mixpanel.people.set 'username', userid
+    mixpanel.name_tag userid
 
   track: (name, properties, success) =>
     mixpanel.track name, properties, success
