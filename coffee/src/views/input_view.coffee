@@ -25,6 +25,12 @@ class athena.lib.InputView extends athena.lib.View
     # whether to blur on enter
     blurOnEnter: true
 
+    # Whether or not to save on blur (requires setter also).
+    saveOnBlur: false
+
+    # Function to call to save this input.
+    save: undefined
+
 
 
   events: => _.extend super,
@@ -60,8 +66,11 @@ class athena.lib.InputView extends athena.lib.View
 
   # events
   onBlur: (event) =>
-    if @options.validateOnBlur
-      @validate()
+    unless @options.validateOnBlur or @options.saveOnBlur
+      return
+
+    if @validate() and @options.saveOnBlur
+      @options.save @value()
 
   onKeyup: (event) =>
     if event.keyCode is util.keys.ENTER

@@ -48,6 +48,8 @@ describe 'athena.lib.InputView', ->
       placeholder: ''
       validateOnBlur: true
       blurOnEnter: true
+      saveOnBlur: false
+      save: undefined
 
     describe 'InputView::elAttributes', ->
 
@@ -135,6 +137,24 @@ describe 'athena.lib.InputView', ->
         spy = spyOn view, 'validate'
         view.$el.trigger 'blur'
         expect(spy).not.toHaveBeenCalled()
+
+      it 'should call InputView::options.save if options.saveOnBlur', ->
+        options = saveOnBlur: true, save: jasmine.createSpy()
+        view = new InputView options
+        view.$el.trigger 'blur'
+        expect(options.save).toHaveBeenCalled()
+
+      it 'should call InputView::options.save iff options.validateOnBlur', ->
+        options = saveOnBlur: false, save: jasmine.createSpy()
+        view = new InputView options
+        view.$el.trigger 'blur'
+        expect(options.save).not.toHaveBeenCalled()
+
+      it 'should call InputView::options.save with vale', ->
+        options = saveOnBlur: true, save: jasmine.createSpy()
+        view = new InputView options
+        view.$el.trigger 'blur'
+        expect(options.save).toHaveBeenCalledWith view.value()
 
 
     describe 'InputView::onKeyup', ->

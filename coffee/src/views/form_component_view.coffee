@@ -31,15 +31,6 @@ class athena.lib.FormComponentView extends athena.lib.View
     # whether to skip validation checks
     noValidation: false
 
-#    # Whether or not to save on blur (requires setter also).
-#    saveOnBlur: false
-#
-#    # Whether or not to save on enter (requires setter also).
-#    saveOnEnter: false
-#
-#    # Function to call to save this input.
-#    setter: undefined
-
     # Inline help to show (when no error shows)
     helpInline: ''
 
