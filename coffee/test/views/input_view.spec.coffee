@@ -150,11 +150,29 @@ describe 'athena.lib.InputView', ->
         view.$el.trigger 'blur'
         expect(options.save).not.toHaveBeenCalled()
 
-      it 'should call InputView::options.save with vale', ->
+      it 'should call InputView::options.save with value', ->
         options = saveOnBlur: true, save: jasmine.createSpy()
         view = new InputView options
         view.$el.trigger 'blur'
         expect(options.save).toHaveBeenCalledWith view.value()
+
+      it 'should trigger Input:Save if options.saveOnBlur', ->
+        view = new InputView saveOnBlur: true, save: ->
+        spy = new test.EventSpy view, 'Input:Save'
+        view.$el.trigger 'blur'
+        expect(spy.triggered).toBe true
+
+      it 'should trigger Input:Save iff options.saveOnBlur', ->
+        view = new InputView saveOnBlur: false, save: ->
+        spy = new test.EventSpy view, 'Input:Save'
+        view.$el.trigger 'blur'
+        expect(spy.triggered).toBe false
+
+      it 'should trigger Input:Save with value', ->
+        view = new InputView saveOnBlur: true, save: ->
+        spy = new test.EventSpy view, 'Input:Save'
+        view.$el.trigger 'blur'
+        expect(spy.arguments[0]).toEqual [view, view.value()]
 
 
     describe 'InputView::onKeyup', ->

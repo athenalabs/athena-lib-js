@@ -64,6 +64,7 @@ class athena.lib.InputView extends athena.lib.View
   validate: =>
     _.isEmpty @validationErrors @value()
 
+
   # events
   onBlur: (event) =>
     unless @options.validateOnBlur or @options.saveOnBlur
@@ -71,10 +72,13 @@ class athena.lib.InputView extends athena.lib.View
 
     if @validate() and @options.saveOnBlur
       @options.save @value()
+      @trigger 'Input:Save', @, @value()
+
 
   onKeyup: (event) =>
     if event.keyCode is util.keys.ENTER
       @onEnter(event)
+
 
   onEnter: (event) =>
     if @options.blurOnEnter
