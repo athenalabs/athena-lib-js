@@ -70,9 +70,12 @@ class athena.lib.InputView extends athena.lib.View
     unless @options.validateOnBlur or @options.saveOnBlur
       return
 
-    if @validate() and @options.saveOnBlur
-      @options.save @value()
-      @trigger 'Input:Save', @, @value()
+    unless @validate() and @options.saveOnBlur
+      return
+
+    @options.save @value(),
+      success: (value) => @trigger 'Input:Save:Success', @, value
+      error: (error) => @trigger 'Input:Save:Error', @, error
 
 
   onKeyup: (event) =>

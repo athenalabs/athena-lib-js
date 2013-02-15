@@ -25,7 +25,8 @@ describe 'athena.lib.FormComponentView', ->
       ]
 
       views = _.map fields, (options) ->
-        view = new FormComponentView options
+        common = saveOnBlur: true, save: ->
+        view = new FormComponentView _.extend common, options
         view.render()
         $safe.append view.$el
         view
@@ -59,11 +60,34 @@ describe 'athena.lib.FormComponentView', ->
 
 
 
-  test.describeSubview
+  test.describeSubview {
     View: FormComponentView
     subviewAttr: 'inputView'
     Subview: athena.lib.InputView
     checkDOM: (child, parent) -> child.parentNode.parentNode is parent
+  }, ->
+
+    it 'should call renderErrors on `Input:Save:Error`', ->
+      view = new FormComponentView
+      spyOn view, 'renderErrors'
+      view.inputView.trigger 'Input:Save:Error', view.inputView, 'Error!!'
+      expect(view.renderErrors).toHaveBeenCalled()
+
+    it 'should call renderHelpMessage on `Input:Save:Success`', ->
+      view = new FormComponentView
+      spyOn view, 'renderHelpMessage'
+      view.inputView.trigger 'Input:Save:Success', view.inputView, 'Foo'
+      expect(view.renderHelpMessage).toHaveBeenCalled()
+
+    it 'should call renderHelp after 2000 ms on `Input:Save:Success`', ->
+      view = new FormComponentView
+      spyOn view, 'renderHelp'
+      view.inputView.trigger 'Input:Save:Success', view.inputView, 'Foo'
+      expect(view.renderHelp.callCount).toBe 1
+      waits 1900
+      runs -> expect(view.renderHelp.callCount).toBe 1
+      waits 200
+      runs -> expect(view.renderHelp.callCount).toBe 2
 
 
   describe 'FormComponentView::value', ->

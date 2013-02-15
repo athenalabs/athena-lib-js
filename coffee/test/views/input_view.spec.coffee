@@ -144,7 +144,7 @@ describe 'athena.lib.InputView', ->
         view.$el.trigger 'blur'
         expect(options.save).toHaveBeenCalled()
 
-      it 'should call InputView::options.save iff options.validateOnBlur', ->
+      it 'should call InputView::options.save iff options.saveOnBlur', ->
         options = saveOnBlur: false, save: jasmine.createSpy()
         view = new InputView options
         view.$el.trigger 'blur'
@@ -154,25 +154,32 @@ describe 'athena.lib.InputView', ->
         options = saveOnBlur: true, save: jasmine.createSpy()
         view = new InputView options
         view.$el.trigger 'blur'
-        expect(options.save).toHaveBeenCalledWith view.value()
+        expect(options.save.argsForCall[0][0]).toBe view.value()
 
-      it 'should trigger Input:Save if options.saveOnBlur', ->
-        view = new InputView saveOnBlur: true, save: ->
-        spy = new test.EventSpy view, 'Input:Save'
-        view.$el.trigger 'blur'
-        expect(spy.triggered).toBe true
+      it 'should trigger Input:Save:Success if options.save succeeds', ->
+        view = new InputView
+          saveOnBlur: true
+          save: (value, options) -> options.success value
 
-      it 'should trigger Input:Save iff options.saveOnBlur', ->
-        view = new InputView saveOnBlur: false, save: ->
-        spy = new test.EventSpy view, 'Input:Save'
+        spy1 = new test.EventSpy view, 'Input:Save:Success'
+        spy2 = new test.EventSpy view, 'Input:Save:Error'
         view.$el.trigger 'blur'
-        expect(spy.triggered).toBe false
+        expect(spy1.triggered).toBe true
+        expect(spy2.triggered).toBe false
+        expect(spy1.arguments[0]).toEqual [view, view.value()]
 
-      it 'should trigger Input:Save with value', ->
-        view = new InputView saveOnBlur: true, save: ->
-        spy = new test.EventSpy view, 'Input:Save'
+      it 'should trigger Input:Save:Error if options.save errors', ->
+        error = 'Error: error!'
+        view = new InputView
+          saveOnBlur: true
+          save: (value, options) -> options.error error
+
+        spy1 = new test.EventSpy view, 'Input:Save:Success'
+        spy2 = new test.EventSpy view, 'Input:Save:Error'
         view.$el.trigger 'blur'
-        expect(spy.arguments[0]).toEqual [view, view.value()]
+        expect(spy1.triggered).toBe false
+        expect(spy2.triggered).toBe true
+        expect(spy2.arguments[0]).toEqual [view, error]
 
 
     describe 'InputView::onKeyup', ->

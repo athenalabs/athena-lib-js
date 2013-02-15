@@ -55,6 +55,15 @@ class athena.lib.FormComponentView extends athena.lib.View
     # override inputView.validate with our own, we call its validateErrors
     @inputView.validate = @validate
 
+    # show success on Input:Save:Success
+    @listenTo @inputView, 'Input:Save:Success', (view, value) =>
+      @renderHelpMessage '✓ Saved', 'inline', 'success'
+      _.delay @renderHelp, 2000 # clear after 2 sec
+
+    # show error on Input:Save:Error
+    @listenTo @inputView, 'Input:Save:Error', (view, error) =>
+      @renderErrors [error]
+
 
   render: =>
     super
