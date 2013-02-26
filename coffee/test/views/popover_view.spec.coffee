@@ -109,6 +109,34 @@ describe 'PopoverView', ->
       view.toggle()
       expect(view.showing).toBe false
 
+    it 'should show popover when not showing', ->
+      view = new PopoverView
+        content: new athena.lib.LoadingView
+        popover: $('.athena-lib-test').children('.foo')
+      view.render()
+      spyOn view, 'popover'
+
+      view.showing = false
+      expect(view.popover).not.toHaveBeenCalled()
+
+      view.toggle()
+      expect(view.popover).toHaveBeenCalled()
+      expect(view.popover.mostRecentCall.args[0]).toBe 'show'
+
+    it 'should hide popover when showing', ->
+      view = new PopoverView
+        content: new athena.lib.LoadingView
+        popover: $('.athena-lib-test').children('.foo')
+      view.render()
+      spyOn view, 'popover'
+
+      view.showing = true
+      expect(view.popover).not.toHaveBeenCalled()
+
+      view.toggle()
+      expect(view.popover).toHaveBeenCalled()
+      expect(view.popover.mostRecentCall.args[0]).toBe 'hide'
+
     it 'should announce that it showed when toggle shows it', ->
       view = new PopoverView
         content: new athena.lib.LoadingView

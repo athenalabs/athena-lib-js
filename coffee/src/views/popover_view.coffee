@@ -58,7 +58,9 @@ class athena.lib.PopoverView extends athena.lib.ContainerView
     unless @rendering
       return
 
-    @popover 'toggle'
+    # bootstrap has a bug in toggle, so for now toggle manually. bug is tracked
+    # here: https://github.com/lecar-red/bootstrapx-clickover/issues/21
+    if @showing then @popover 'hide' else @popover 'show'
     @showing = !@showing
     @trigger "PopoverView:PopoverDid#{if @showing then 'Show' else 'Hide'}"
 
