@@ -37,18 +37,27 @@ class athena.lib.PopoverView extends athena.lib.ContainerView
 
 
   show: =>
+    unless @rendering
+      return
+
     @popover 'show'
     @showing = true
     @trigger 'PopoverView:PopoverDidShow'
 
 
   hide: =>
+    unless @rendering
+      return
+
     @popover 'hide'
     @showing = false
     @trigger 'PopoverView:PopoverDidHide'
 
 
   toggle: =>
+    unless @rendering
+      return
+
     @popover 'toggle'
     @showing = !@showing
     @trigger "PopoverView:PopoverDid#{if @showing then 'Show' else 'Hide'}"
