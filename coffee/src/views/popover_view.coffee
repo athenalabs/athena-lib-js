@@ -16,6 +16,9 @@ class athena.lib.PopoverView extends athena.lib.ContainerView
 
   render: =>
     super
+
+    @showing = false
+
     @popover
       animation: @options.animation
       placement: @options.placement
@@ -35,14 +38,20 @@ class athena.lib.PopoverView extends athena.lib.ContainerView
 
   show: =>
     @popover 'show'
+    @showing = true
+    @trigger 'PopoverView:PopoverDidShow'
 
 
   hide: =>
     @popover 'hide'
+    @showing = false
+    @trigger 'PopoverView:PopoverDidHide'
 
 
   toggle: =>
     @popover 'toggle'
+    @showing = !@showing
+    @trigger "PopoverView:PopoverDid#{if @showing then 'Show' else 'Hide'}"
 
 
   destroy: =>
