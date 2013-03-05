@@ -154,4 +154,9 @@ class athena.lib.GridTileView extends athena.lib.View
     _.defaults tileVars,
       {link: '#', thumbnail: '', icon: undefined, text: undefined}
     @$el.html @template tileVars
+
+    tooltip = @model.get 'tooltip'
+    if tooltip
+      @$el.tooltip(tooltip)
+
     @
