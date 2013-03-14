@@ -11,7 +11,7 @@ class athena.lib.NavigationView extends athena.lib.View
   template: _.template '''
     <div class="navbar-inner">
       <% if (brand) { %>
-        <a class="brand" href="#"><%= brand %></a>
+        <a class="brand" href="/"><%= brand %></a>
       <% } %>
       <ul class="nav toolbar-view pull-right"></ul>
     </div>
