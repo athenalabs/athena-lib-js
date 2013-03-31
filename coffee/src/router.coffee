@@ -56,3 +56,14 @@ class athena.lib.Router extends Backbone.Router
 
       # navigate to the route described by path
       router.navigate @pathname, trigger: true
+
+
+  # extract url query string params as an object
+  urlQueryParams: =>
+    queryParams = window.location.search.substr(1).split '&'
+    params = {}
+    for param in queryParams
+      param = param.split '='
+      if param?.length > 1
+        params[param[0]] = param[1]
+    params
