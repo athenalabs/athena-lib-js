@@ -26,6 +26,7 @@ class athena.lib.PopoverView extends athena.lib.ContainerView
       trigger: @options.trigger
       title: @options.title
       delay: @options.delay
+      placementOffset: @options.placementOffset
       content: @
 
     @
@@ -70,9 +71,10 @@ class athena.lib.PopoverView extends athena.lib.ContainerView
     super
 
 
-# extend Popover prototype to allow selector content
+# extend Popover prototype to allow selector content and adjustable placement
 console.log 'patching Popover'
 Popover = $.fn.popover.Constructor
+
 Popover::_setContent = Popover::setContent
 Popover::setContent = ->
   $tip = @tip()
@@ -96,5 +98,24 @@ Popover::setContent = ->
   else
     $tip.find('.popover-content')[htmlOrText](content)
 
-
   $tip.removeClass('fade top bottom left right in')
+
+# adjust popover placement based on custom placementOffset option
+Popover::_applyPlacement = Popover::applyPlacement
+Popover::applyPlacement = (offset, placement) ->
+  adjustedOffset =
+    top: offset.top + (@options.placementOffset.top ? 0)
+    left: offset.left + (@options.placementOffset.left ? 0)
+  @_applyPlacement adjustedOffset, placement
+
+# adjust arrow placement based on custom placementOffset option
+Popover::_replaceArrow = Popover::replaceArrow
+Popover::replaceArrow = (delta, dimension, position) ->
+  # adjust delta by 2 * offset (delta gets halved later) before forwarding
+  offset = @options.placementOffset ? {}
+  adjustment = if position == 'top' then offset.top else offset.left
+  @_replaceArrow delta + (2 * adjustment ? 0), dimension, position
+
+# patch bootstrap bug: native method incorrectly looks for '.tooltip-arrow'
+Popover::arrow = ->
+  @$arrow = @$arrow or @tip().find '.arrow'
