@@ -151,3 +151,196 @@ describe 'athena.lib.util', ->
       $('body').append container
       expect(elementInDom divs).toBe true
       container.remove()
+
+
+  describe 'util.socialPlugins', ->
+    socialPlugins = util.socialPlugins
+
+    it 'should exist', ->
+      expect(socialPlugins).toBeDefined()
+
+    it 'should be an object', ->
+      expect(typeof socialPlugins).toBe 'object'
+
+
+    describe 'util.socialPlugins.initialize', ->
+      initialize = socialPlugins.initialize
+
+      it 'should exist', ->
+        expect(initialize).toBeDefined()
+
+      it 'should be a function', ->
+        expect(typeof initialize).toBe 'function'
+
+      it 'should create a facebook js sdk script tag and initialize the FB js
+          sdk when passed a facebook appId', ->
+        script = $ 'script#facebook-jssdk'
+        expect(script.length).toBe 0
+        $('body').prepend('<div id="fb-root"></div>')
+
+        expect(window.FB).toBeUndefined()
+        initialize facebook: appId: 'fakeid'
+        script = $ 'script#facebook-jssdk'
+        expect(script.length).toBe 1
+        expect(script.attr 'src').toBe '//connect.facebook.net/en_US/all.js'
+
+        expect(window.FB).toBeUndefined()
+        waitsFor (->
+          window.FB?.api?
+        ), 'window.FB.api to be defined', 5000
+
+      it 'should create a google +1 script tag and initialize the google api
+          when passed googlePlus: true', ->
+        script = $ 'script#g-plus1'
+        expect(script.length).toBe 0
+
+        expect(window.gapi).toBeUndefined()
+        initialize googlePlus: true
+        script = $ 'script#g-plus1'
+        expect(script.length).toBe 1
+        expect(script.attr 'src').toBe 'https://apis.google.com/js/plusone.js'
+
+        expect(window.gapi).toBeUndefined()
+        waitsFor (->
+          window.gapi
+        ), 'window.gapi to be defined', 5000
+
+
+      it 'should create a twitter widgets script tag and initialize the twitter
+          api when passed twitter: true', ->
+        script = $ 'script#twitter-wjs'
+        expect(script.length).toBe 0
+
+        expect(window.twttr).toBeUndefined()
+        initialize twitter: true
+        script = $ 'script#twitter-wjs'
+        expect(script.length).toBe 1
+        expect(script.attr 'src').toBe 'https://platform.twitter.com/widgets.js'
+
+        expect(window.twttr).toBeUndefined()
+        waitsFor (->
+          window.twttr
+        ), 'window.twttr to be defined', 5000
+
+
+    describe 'util.socialPlugins.facebookLogin', ->
+      facebookLogin = socialPlugins.facebookLogin
+
+      it 'should exist', ->
+        expect(facebookLogin).toBeDefined()
+
+      it 'should be a function', ->
+        expect(typeof facebookLogin).toBe 'function'
+
+      beforeEach ->
+        window.FB ?=
+          getLoginStatus: ->
+          login: ->
+
+        spyOn window.FB, 'getLoginStatus'
+        spyOn window.FB, 'login'
+
+      it 'should call FB.getLoginStatus', ->
+        expect(FB.getLoginStatus).not.toHaveBeenCalled()
+        facebookLogin()
+        expect(FB.getLoginStatus).toHaveBeenCalled()
+
+      it 'should pass FB.getLoginStatus a callback', ->
+        expect(FB.getLoginStatus).not.toHaveBeenCalled()
+        facebookLogin()
+        expect(FB.getLoginStatus).toHaveBeenCalled()
+        expect(typeof FB.getLoginStatus.mostRecentCall.args[0]).toBe 'function'
+
+
+      describe 'facebookLogin: getLoginStatus status == "connected"', ->
+
+        it 'should call a success callback', ->
+          options = success: jasmine.createSpy 'success'
+
+          facebookLogin options
+          statusHandler = FB.getLoginStatus.mostRecentCall.args[0]
+
+          expect(options.success).not.toHaveBeenCalled()
+          statusHandler status: 'connected'
+          expect(options.success).toHaveBeenCalled()
+
+
+      describe 'facebookLogin: getLoginStatus status != "connected"', ->
+
+        it 'should call FB.login', ->
+          facebookLogin()
+          statusHandler = FB.getLoginStatus.mostRecentCall.args[0]
+
+          expect(FB.login).not.toHaveBeenCalled()
+          statusHandler status: 'not_connected'
+          expect(FB.login).toHaveBeenCalled()
+
+        it 'should pass FB.login a callback', ->
+          facebookLogin()
+          statusHandler = FB.getLoginStatus.mostRecentCall.args[0]
+
+          expect(FB.login).not.toHaveBeenCalled()
+          statusHandler status: 'not_connected'
+          expect(FB.login).toHaveBeenCalled()
+          expect(typeof FB.login.mostRecentCall.args[0]).toBe 'function'
+
+
+        describe 'facebookLogin: login authResponse is truthy', ->
+
+          it 'should call a success callback', ->
+            options = success: jasmine.createSpy 'success'
+
+            facebookLogin options
+            statusHandler = FB.getLoginStatus.mostRecentCall.args[0]
+
+            statusHandler status: 'not_connected'
+            expect(FB.login).toHaveBeenCalled()
+
+            loginHandler = FB.login.mostRecentCall.args[0]
+
+            expect(options.success).not.toHaveBeenCalled()
+            loginHandler authResponse: true
+            expect(options.success).toHaveBeenCalled()
+
+
+        describe 'facebookLogin: login authResponse is falsy', ->
+
+          it 'should call a failure callback', ->
+            options = failure: jasmine.createSpy 'failure'
+
+            facebookLogin options
+            statusHandler = FB.getLoginStatus.mostRecentCall.args[0]
+
+            statusHandler status: 'not_connected'
+            expect(FB.login).toHaveBeenCalled()
+
+            loginHandler = FB.login.mostRecentCall.args[0]
+
+            expect(options.failure).not.toHaveBeenCalled()
+            loginHandler authResponse: false
+            expect(options.failure).toHaveBeenCalled()
+
+
+    describe 'util.socialPlugins.facebookPicture', ->
+      facebookPicture = socialPlugins.facebookPicture
+
+      it 'should exist', ->
+        expect(facebookPicture).toBeDefined()
+
+      it 'should be a function', ->
+        expect(typeof facebookPicture).toBe 'function'
+
+      it 'should return a link to a facebook picture', ->
+        picture = facebookPicture 'fake.username'
+        picture = picture.split('?')[0]
+        expect(picture).toBe '//graph.facebook.com/fake.username/picture'
+
+      it 'should return a picture of size "large" by default', ->
+        picture = facebookPicture 'fake.username'
+        pictureParams = picture.split('?')[1]
+        expect(pictureParams).toBe 'type=large'
+
+      it 'should allow customization of the picture size', ->
+        picture = facebookPicture 'fake.username', 'customSize'
+        pictureParams = picture.split('?')[1]
+        expect(pictureParams).toBe 'type=customSize'
