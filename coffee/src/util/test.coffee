@@ -43,11 +43,24 @@ test.throwsExceptionWithString = (str, fn, args) ->
 
 
 # creates a jasmine describeProperty block
-test.describeProperty = (Model, name, options, propOptions, tests) ->
+#
+# Model: model class being testing
+# name: name of model property manager
+# options:
+#   modelOptions: initialization options for Model
+#   setter: does the property manager set as well as get values; true by default
+#   default: default value returned by property manager
+#   dataProperty: the name of the property being accessed; defaults to name
+# tests: custom tests to run
+test.describeProperty = (Model, name, options = {}, tests) ->
+  # rotate arguments if appropriate
+  if typeof options == 'function' and not tests?
+    tests = options
+    options = {}
 
-  options ?= {}
-  propOptions ?= {}
-  propOptions.setter ?= true
+  modelOptions = options.modelOptions ? {}
+  options.setter ?= true
+  dataProperty = options.dataProperty ? name
 
   describe "#{Model.name}::#{name}", ->
 
@@ -55,40 +68,40 @@ test.describeProperty = (Model, name, options, propOptions, tests) ->
       expect(typeof Model::[name]).toBe 'function'
 
     it 'should get the value of the attribute', ->
-      m = new Model options
-      expect(m[name]()).toEqual (propOptions.default ? m.get name)
-      m.set name, 'foo'
-      expect(m[name]()).toEqual m.get name
+      m = new Model modelOptions
+      expect(m[name]()).toEqual (options.default ? m.get dataProperty)
+      m.set dataProperty, 'foo'
+      expect(m[name]()).toEqual m.get dataProperty
       expect(m[name]()).toEqual 'foo'
 
-    if propOptions.setter is false
+    if options.setter is false
       it 'should NOT set the value of the attribute (setter is false)', ->
-        m = new Model options
-        expect(m[name]()).toEqual (propOptions.default ? m.get name)
+        m = new Model modelOptions
+        expect(m[name]()).toEqual (options.default ? m.get dataProperty)
         expect(m[name]()).not.toEqual 'foo'
-        expect(m[name]('foo')).toEqual (propOptions.default ? m.get name)
-        expect(m[name]()).toEqual (propOptions.default ? m.get name)
+        expect(m[name]('foo')).toEqual (options.default ? m.get dataProperty)
+        expect(m[name]()).toEqual (options.default ? m.get dataProperty)
         expect(m[name]()).not.toEqual 'foo'
 
     else
       it 'should set the value of the attribute', ->
-        m = new Model options
+        m = new Model modelOptions
         expect(m[name]()).not.toEqual 'foo'
-        expect(m[name]()).toEqual (propOptions.default ? m.get name)
-        expect(m[name]('foo')).toEqual m.get name
+        expect(m[name]()).toEqual (options.default ? m.get dataProperty)
+        expect(m[name]('foo')).toEqual m.get dataProperty
         expect(m[name]()).toEqual 'foo'
 
-    it "should use default value #{propOptions.default}", ->
-      m = new Model options
-      if propOptions.default?
-        expect(m.get name).not.toEqual propOptions.default
+    it "should use default value #{options.default}", ->
+      m = new Model modelOptions
+      if options.default?
+        expect(m.get dataProperty).not.toEqual options.default
 
-      if m.get(name)
-        expect(m[name]()).toEqual m.get(name)
-      else if options[name]? and options[name] != propOptions.default
-        expect(m[name]()).not.toEqual propOptions.default
+      if m.get(dataProperty)
+        expect(m[name]()).toEqual m.get(dataProperty)
+      else if modelOptions[name]? and modelOptions[name] != options.default
+        expect(m[name]()).not.toEqual options.default
       else
-        expect(m[name]()).toEqual propOptions.default
+        expect(m[name]()).toEqual options.default
 
     tests?()
 

@@ -46,10 +46,12 @@ describe 'athena.lib.util.test', ->
 
     spy = spyOn(@, 'callback').andCallThrough()
 
-    test.describeProperty Knight, 'name', {}, {}, @callback
-    test.describeProperty Knight, 'title', {title: 'Sir'}, setter: false
-    test.describeProperty Knight, 'color', {}, default: 'blue'
-    test.describeProperty Knight, 'quest', {},
+    test.describeProperty Knight, 'name', {}, @callback
+    test.describeProperty Knight, 'title',
+      modelOptions: title: 'Sir'
+      setter: false
+    test.describeProperty Knight, 'color', default: 'blue'
+    test.describeProperty Knight, 'quest',
       default: toSeekTheGrail
       setter: false
 
