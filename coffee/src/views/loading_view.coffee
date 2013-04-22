@@ -17,8 +17,35 @@ class athena.lib.LoadingView extends athena.lib.View
     super
     @$el.empty()
     @$el.append $('<img>').attr 'src', @options.img
-    @$el.append 'Loading . . .'
+    @$el.append 'Loading <span class="progress-display"></span>'
+    @startProgress()
+
     @
+
+
+  destroy: =>
+    @stopProgress()
+    super
+
+
+  updateProgress: =>
+    @progressCount = (@progressCount + 1) % 4
+
+    progress = ''
+    for i in [0...@progressCount]
+      progress += '. '
+
+    @display.text progress
+
+
+  startProgress: (ms = 500) =>
+    @display = @$ 'span.progress-display'
+    @progressCount = 0
+    @progressInterval = setInterval @updateProgress, ms
+
+
+  stopProgress: =>
+    clearInterval @progressInterval
 
 
   renderLoading: =>
