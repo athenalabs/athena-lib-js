@@ -34,10 +34,12 @@ class athena.lib.GistView extends athena.lib.DocView
         success: (data) =>
           @doc @parseGist data
           @softRender()
+          @trigger 'GistView:Loaded'
         error: (xhr) =>
           @doc 'Error retrieving gist.'
           @softRender()
           console.log xhr.responseText
+          @trigger 'GistView:FailedToLoad'
 
     @_gist
 
