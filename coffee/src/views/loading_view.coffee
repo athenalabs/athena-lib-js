@@ -9,9 +9,9 @@ class athena.lib.LoadingView extends athena.lib.View
 
 
   defaults: => _.extend super,
-
     # the image to use
     img: 'http://athena.ai/img/gray-a-logo.png'
+
 
   render: =>
     super
