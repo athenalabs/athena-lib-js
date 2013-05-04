@@ -39,6 +39,9 @@ class athena.lib.LoadingView extends athena.lib.View
 
 
   startProgress: (ms = 500) =>
+    # clear any preexisting interval
+    @stopProgress()
+
     @display = @$ 'span.progress-display'
     @progressCount = 0
     @progressInterval = setInterval @updateProgress, ms
