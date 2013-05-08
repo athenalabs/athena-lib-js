@@ -1,5 +1,5 @@
 goog.provide 'athena.lib.App'
-goog.require 'athena.lib.ContainerView'
+goog.require 'athena.lib.PageView'
 goog.require 'athena.lib.MixpanelTracker'
 goog.require 'athena.lib.NullTracker'
 
@@ -18,7 +18,7 @@ class athena.lib.App
 
 
   # overridable classes for constructing app elements
-  View: athena.lib.ContainerView
+  View: athena.lib.PageView
   Router: athena.lib.Router
 
 
